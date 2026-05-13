@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ReelVibe 🎬</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #e8e8f0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* ── App shell ── */
+    #app {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      padding: 20px 24px 0;
+      flex-shrink: 0;
+    }
+    .progress-bar {
+      height: 4px;
+      background: #1e1e2a;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      border-radius: 4px;
+      transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #6b6b80;
+      margin-top: 6px;
+    }
+    .progress-label span:last-child { color: #a855f7; }
+
+    /* ── Slide container ── */
+    .slides-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      margin: 0 16px;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transform: translateX(40px) scale(0.96);
+      transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+      padding: 16px 0;
+    }
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+    .slide.exit-left {
+      opacity: 0;
+      transform: translateX(-40px) scale(0.96);
+    }
+
+    /* ── Question header ── */
+    .q-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #a855f7;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .q-title {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .q-sub {
+      font-size: 14px;
+      color: #8888a0;
+      margin-bottom: 24px;
+    }
+
+    /* ── Option grid ── */
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+    .options-2 { grid-template-columns: 1fr 1fr; }
+    .options-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .options-4 { grid-template-columns: 1fr 1fr; }
+    .options-6 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .option {
+      background: #14141f;
+      border: 1.5px solid #1e1e2e;
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .option:active { transform: scale(0.96); }
+    .option .emoji {
+      font-size: 28px;
+      line-height: 1;
+    }
+    .option .label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #c0c0d0;
+      line-height: 1.2;
+    }
+    .option.selected {
+      border-color: #a855f7;
+      background: #1a1a2e;
+      box-shadow: 0 0 20px rgba(168,85,247,0.12);
+    }
+    .option.selected .label { color: #fff; }
+
+    /* ── Full-width option ── */
+    .option-full {
+      width: 100%;
+      padding: 18px;
+      border-radius: 16px;
+      background: #14141f;
+      border: 1.5px solid #1e1e2e;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .option-full .emoji { font-size: 24px; }
+    .option-full .label { font-size: 15px; font-weight: 500; color: #c0c0d0; }
+    .option-full.selected {
+      border-color: #a855f7;
+      background: #1a1a2e;
+      box-shadow: 0 0 20px rgba(168,85,247,0.12);
+    }
+    .option-full.selected .label { color: #fff; }
+
+    /* ── Bottom nav ── */
+    .nav-area {
+      padding: 16px 24px 28px;
+      flex-shrink: 0;
+    }
+    .btn-next {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .btn-next.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .btn-next:active { transform: scale(0.97); }
+
+    /* ── Results slide ── */
+    .results-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding-top: 8px;
+    }
+    .results-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 2px 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .results-scroll::-webkit-scrollbar { width: 3px; }
+    .results-scroll::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 3px; }
+
+    .result-card {
+      background: linear-gradient(135deg, #14141f 0%, #1a1a2e 100%);
+      border: 1px solid #1e1e2e;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      border-radius: 20px 20px 0 0;
+    }
+    .result-card .rank {
+      font-size: 12px;
+      font-weight: 600;
+      color: #a855f7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .result-card .title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .result-card .meta {
+      font-size: 13px;
+      color: #8888a0;
+      margin-bottom: 10px;
+    }
+    .result-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .result-card .tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #1e1e2e;
+      color: #c0c0d0;
+      border: 1px solid #2a2a40;
+    }
+    .result-card .desc {
+      font-size: 14px;
+      color: #a0a0b8;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .results-cta {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+    }
+    .results-cta button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .results-cta button:active { transform: scale(0.96); }
+    .btn-retake {
+      background: #1e1e2e;
+      color: #c0c0d0;
+      border: 1px solid #2a2a40 !important;
+    }
+    .btn-share {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #fff;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .results-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .results-header .sub {
+      font-size: 13px;
+      color: #8888a0;
+    }
+
+    /* ── Loading ── */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      height: 100%;
+    }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid #1e1e2e;
+      border-top: 3px solid #a855f7;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { color: #8888a0; font-size: 14px; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp 0.4s ease forwards; opacity: 0; }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 380px) {
+      .q-title { font-size: 22px; }
+      .option .emoji { font-size: 24px; }
+      .option .label { font-size: 12px; }
+    }
+    @media (min-width: 500px) {
+      #app { border-left: 1px solid #1a1a2a; border-right: 1px solid #1a1a2a; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label">
+      <span id="qCount">1 / 6</span>
+      <span id="qName">Mood</span>
+    </div>
+  </div>
+
+  <!-- Slides -->
+  <div class="slides-container" id="slidesContainer">
+    <!-- injected by JS -->
+  </div>
+
+  <!-- Nav -->
+  <div class="nav-area" id="navArea">
+    <button class="btn-next" id="btnNext">Next →</button>
+  </div>
+</div>
+
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  QUESTIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const QUESTIONS = [
+  {
+    id: 'mood',
+    label: 'Mood',
+    title: "What's your vibe right now?",
+    sub: 'Pick the mood you\'re craving',
+    cols: 3,
+    options: [
+      { emoji: '🔥', label: 'Pumped', val: 'pumped' },
+      { emoji: '🧠', label: 'Thoughtful', val: 'thoughtful' },
+      { emoji: '😂', label: 'Funny', val: 'funny' },
+      { emoji: '😰', label: 'Tense', val: 'tense' },
+      { emoji: '💔', label: 'Emotional', val: 'emotional' },
+      { emoji: '🌙', label: 'Chill', val: 'chill' },
+    ]
+  },
+  {
+    id: 'genre',
+    label: 'Genre',
+    title: 'What genre hits right now?',
+    sub: 'Pick your favorite territory',
+    cols: 3,
+    options: [
+      { emoji: '🤖', label: 'Sci-Fi', val: 'sci-fi' },
+      { emoji: '🔫', label: 'Action', val: 'action' },
+      { emoji: '😆', label: 'Comedy', val: 'comedy' },
+      { emoji: '🕵️', label: 'Thriller', val: 'thriller' },
+      { emoji: '😨', label: 'Horror', val: 'horror' },
+      { emoji: '💕', label: 'Romance', val: 'romance' },
+      { emoji: '⚔️', label: 'Fantasy', val: 'fantasy' },
+      { emoji: '🧛', label: 'Dark', val: 'dark' },
+      { emoji: '📖', label: 'Drama', val: 'drama' },
+    ]
+  },
+  {
+    id: 'type',
+    label: 'Format',
+    title: 'Series or movie?',
+    sub: 'How deep do you want to go?',
+    cols: 3,
+    options: [
+      { emoji: '🎬', label: 'Movie', val: 'movie' },
+      { emoji: '📺', label: 'Series', val: 'series' },
+      { emoji: '🤷', label: 'Either', val: 'either' },
+    ]
+  },
+  {
+    id: 'time',
+    label: 'Time',
+    title: 'How much time you got?',
+    sub: 'Be real with yourself',
+    cols: 2,
+    options: [
+      { emoji: '⏱️', label: 'Quick (< 2h)', val: 'quick' },
+      { emoji: '🎞️', label: 'Standard (2-3h)', val: 'standard' },
+      { emoji: '🍿', label: 'Binge-ready', val: 'binge' },
+      { emoji: '🏰', label: 'Epic saga', val: 'epic' },
+    ]
+  },
+  {
+    id: 'era',
+    label: 'Era',
+    title: 'Which era speaks to you?',
+    sub: 'Old gold or fresh drops?',
+    cols: 2,
+    options: [
+      { emoji: '📼', label: 'Classic (pre-2000)', val: 'classic' },
+      { emoji: '💿', label: '2000s-2010s', val: '2000s' },
+      { emoji: '✨', label: 'Recent (2020+)', val: 'recent' },
+      { emoji: '♾️', label: 'Any era', val: 'any' },
+    ]
+  },
+  {
+    id: 'intensity',
+    label: 'Intensity',
+    title: 'How intense?',
+    sub: 'Light snack or heavy feast?',
+    cols: 3,
+    options: [
+      { emoji: '🌿', label: 'Light', val: 'light' },
+      { emoji: '⚡', label: 'Medium', val: 'medium' },
+      { emoji: '🌋', label: 'Heavy', val: 'heavy' },
+    ]
+  }
+];
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  DATABASE — 60 curated titles
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const DB = [
+  // ── Sci-Fi ──
+  { title: 'Interstellar', type: 'movie', genres: ['sci-fi','drama'], moods: ['thoughtful','emotional'], time: 'standard', era: '2010s', intensity: 'medium', year: 2014, desc: 'A stunning cosmic journey through love, time, and survival.' },
+  { title: 'The Matrix', type: 'movie', genres: ['sci-fi','action'], moods: ['pumped','thoughtful'], time: 'standard', era: 'classic', intensity: 'heavy', year: 1999, desc: 'Reality is a simulation. The red pill changes everything.' },
+  { title: 'Black Mirror', type: 'series', genres: ['sci-fi','thriller','dark'], moods: ['thoughtful','tense'], time: 'binge', era: '2010s', intensity: 'heavy', year: 2011, desc: 'Dark tech anthology that haunts you long after.' },
+  { title: 'Dune', type: 'movie', genres: ['sci-fi','action','drama'], moods: ['pumped','thoughtful'], time: 'epic', era: 'recent', intensity: 'medium', year: 2021, desc: 'Spice, sandworms, and a war for the galaxy.' },
+  { title: 'Severance', type: 'series', genres: ['sci-fi','thriller','drama'], moods: ['thoughtful','tense'], time: 'binge', era: 'recent', intensity: 'medium', year: 2022, desc: 'Work-life balance taken to a chilling extreme.' },
+  { title: 'Arrival', type: 'movie', genres: ['sci-fi','drama'], moods: ['thoughtful','emotional'], time: 'standard', era: '2010s', intensity: 'light', year: 2016, desc: 'Aliens, language, and time — beautifully bent.' },
+  { title: 'Blade Runner 2049', type: 'movie', genres: ['sci-fi','drama','thriller'], moods: ['thoughtful','chill'], time: 'epic', era: '2010s', intensity: 'medium', year: 2017, desc: 'A slow-burn visual masterpiece about what makes us human.' },
+  { title: 'The Expanse', type: 'series', genres: ['sci-fi','action','drama'], moods: ['pumped','thoughtful'], time: 'epic', era: '2010s', intensity: 'medium', year: 2015, desc: 'Hard sci-fi political thriller across the solar system.' },
+
+  // ── Action ──
+  { title: 'John Wick', type: 'movie', genres: ['action','thriller'], moods: ['pumped','tense'], time: 'quick', era: '2010s', intensity: 'heavy', year: 2014, desc: 'Man + dog + guns = cinematic perfection.' },
+  { title: 'Mad Max: Fury Road', type: 'movie', genres: ['action','sci-fi'], moods: ['pumped'], time: 'standard', era: '2010s', intensity: 'heavy', year: 2015, desc: 'Two hours of pure gasoline-fueled insanity.' },
+  { title: 'The Dark Knight', type: 'movie', genres: ['action','thriller','drama'], moods: ['tense','thoughtful','pumped'], time: 'standard', era: '2000s', intensity: 'heavy', year: 2008, desc: 'The greatest superhero film ever made. Period.' },
+  { title: 'Extraction', type: 'movie', genres: ['action','thriller'], moods: ['pumped','tense'], time: 'quick', era: 'recent', intensity: 'heavy', year: 2020, desc: 'Non-stop adrenaline with Chris Hemsworth.' },
+  { title: 'The Raid', type: 'movie', genres: ['action','thriller'], moods: ['pumped'], time: 'quick', era: '2010s', intensity: 'heavy', year: 2011, desc: 'Indonesian martial arts at its brutal finest.' },
+  { title: 'Gladiator', type: 'movie', genres: ['action','drama'], moods: ['pumped','emotional'], time: 'epic', era: 'classic', intensity: 'heavy', year: 2000, desc: 'Are you not entertained? Maximus defines legacy.' },
+  { title: 'Gangs of Wasseypur', type: 'movie', genres: ['action','drama','comedy'], moods: ['pumped','funny'], time: 'epic', era: '2010s', intensity: 'heavy', year: 2012, desc: 'Indian crime saga — chaotic, violent, darkly hilarious.' },
+  { title: 'The Night Manager', type: 'series', genres: ['action','thriller','drama'], moods: ['tense','pumped'], time: 'binge', era: '2010s', intensity: 'medium', year: 2016, desc: 'Spy game at its most stylish and tense.' },
+
+  // ── Comedy ──
+  { title: 'The Office (US)', type: 'series', genres: ['comedy'], moods: ['funny','chill'], time: 'epic', era: '2000s', intensity: 'light', year: 2005, desc: 'The ultimate comfort show. Cringe, heart, repeat.' },
+  { title: 'Superbad', type: 'movie', genres: ['comedy'], moods: ['funny','chill'], time: 'quick', era: '2000s', intensity: 'light', year: 2007, desc: 'Teen chaos at its most hilarious and real.' },
+  { title: 'Parasite', type: 'movie', genres: ['comedy','thriller','drama'], moods: ['thoughtful','tense','funny'], time: 'standard', era: 'recent', intensity: 'medium', year: 2019, desc: 'Class satire that\'s funny, tense, and unforgettable.' },
+  { title: 'Ted Lasso', type: 'series', genres: ['comedy','drama'], moods: ['funny','chill','emotional'], time: 'binge', era: 'recent', intensity: 'light', year: 2020, desc: 'The show that makes you believe in kindness again.' },
+  { title: 'The Big Lebowski', type: 'movie', genres: ['comedy'], moods: ['funny','chill'], time: 'quick', era: 'classic', intensity: 'light', year: 1998, desc: 'The Dude abides. A cult classic of chill.' },
+  { title: 'Barfi!', type: 'movie', genres: ['comedy','romance','drama'], moods: ['funny','emotional','chill'], time: 'standard', era: '2010s', intensity: 'light', year: 2012, desc: 'A beautiful, wordless love story with heart.' },
+  { title: 'What We Do in the Shadows', type: 'series', genres: ['comedy','dark'], moods: ['funny','chill'], time: 'binge', era: 'recent', intensity: 'light', year: 2019, desc: 'Vampire mockumentary — ridiculously good.' },
+
+  // ── Thriller ──
+  { title: 'Breaking Bad', type: 'series', genres: ['thriller','drama','dark'], moods: ['tense','thoughtful','pumped'], time: 'epic', era: '2000s', intensity: 'heavy', year: 2008, desc: 'Walter White — the greatest TV character ever written.' },
+  { title: 'Gone Girl', type: 'movie', genres: ['thriller','drama'], moods: ['tense','thoughtful'], time: 'standard', era: '2010s', intensity: 'heavy', year: 2014, desc: 'Marriage is a trap. This movie proves it.' },
+  { title: 'Prisoners', type: 'movie', genres: ['thriller','drama'], moods: ['tense','emotional'], time: 'standard', era: '2010s', intensity: 'heavy', year: 2013, desc: 'A father\'s desperation pushed to the edge.' },
+  { title: 'Sherlock', type: 'series', genres: ['thriller','drama'], moods: ['thoughtful','tense','pumped'], time: 'binge', era: '2010s', intensity: 'medium', year: 2010, desc: 'Modern Holmes — brilliant, fast, addictive.' },
+  { title: 'Se7en', type: 'movie', genres: ['thriller','dark'], moods: ['tense','thoughtful'], time: 'standard', era: 'classic', intensity: 'heavy', year: 1995, desc: 'Seven deadly sins. One box you\'ll never forget.' },
+  { title: 'Mindhunter', type: 'series', genres: ['thriller','drama','dark'], moods: ['tense','thoughtful'], time: 'binge', era: '2010s', intensity: 'heavy', year: 2017, desc: 'FBI profilers hunting serial killers. Dark and masterful.' },
+  { title: 'Shutter Island', type: 'movie', genres: ['thriller','drama','dark'], moods: ['tense','thoughtful'], time: 'standard', era: '2010s', intensity: 'heavy', year: 2010, desc: 'Is he crazy or is it real? Mind-bending to the end.' },
+  { title: 'Money Heist', type: 'series', genres: ['thriller','action','drama'], moods: ['tense','pumped'], time: 'epic', era: '2010s', intensity: 'medium', year: 2017, desc: 'The perfect heist. Mask on, brain off, enjoy.' },
+
+  // ── Horror ──
+  { title: 'Hereditary', type: 'movie', genres: ['horror','drama'], moods: ['tense','emotional'], time: 'standard', era: '2010s', intensity: 'heavy', year: 2018, desc: 'Horror that sits in your chest for days.' },
+  { title: 'The Haunting of Hill House', type: 'series', genres: ['horror','drama'], moods: ['tense','emotional'], time: 'binge', era: '2010s', intensity: 'heavy', year: 2018, desc: 'Family trauma dressed as a ghost story. Perfect.' },
+  { title: 'Get Out', type: 'movie', genres: ['horror','thriller','comedy'], moods: ['tense','thoughtful','funny'], time: 'quick', era: '2010s', intensity: 'medium', year: 2017, desc: 'Social satire meets horror. Groundbreaking.' },
+  { title: 'A Quiet Place', type: 'movie', genres: ['horror','sci-fi','drama'], moods: ['tense','emotional'], time: 'quick', era: 'recent', intensity: 'medium', year: 2018, desc: 'Silence is survival. Tension at its purest.' },
+  { title: 'The Conjuring', type: 'movie', genres: ['horror','thriller'], moods: ['tense'], time: 'quick', era: '2010s', intensity: 'heavy', year: 2013, desc: 'Classic haunted house done right. Creepy as hell.' },
+
+  // ── Romance ──
+  { title: 'La La Land', type: 'movie', genres: ['romance','drama','comedy'], moods: ['emotional','chill','funny'], time: 'standard', era: '2010s', intensity: 'light', year: 2016, desc: 'Dreams, love, and jazz in Los Angeles.' },
+  { title: 'The Before Trilogy', type: 'movie', genres: ['romance','drama'], moods: ['emotional','thoughtful','chill'], time: 'standard', era: '2000s', intensity: 'light', year: 1995, desc: 'Three films, one love story, real time.' },
+  { title: 'Normal People', type: 'series', genres: ['romance','drama'], moods: ['emotional','thoughtful'], time: 'binge', era: 'recent', intensity: 'medium', year: 2020, desc: 'Love that feels painfully, beautifully real.' },
+  { title: 'Eternal Sunshine', type: 'movie', genres: ['romance','sci-fi','drama'], moods: ['emotional','thoughtful'], time: 'quick', era: '2000s', intensity: 'medium', year: 2004, desc: 'Erase your ex? The science says no. Heart says yes.' },
+
+  // ── Fantasy ──
+  { title: 'Lord of the Rings', type: 'movie', genres: ['fantasy','action','drama'], moods: ['pumped','emotional','thoughtful'], time: 'epic', era: 'classic', intensity: 'medium', year: 2001, desc: 'The definitive fantasy epic. One ring to rule them all.' },
+  { title: 'Game of Thrones', type: 'series', genres: ['fantasy','action','drama','dark'], moods: ['pumped','tense','thoughtful'], time: 'epic', era: '2010s', intensity: 'heavy', year: 2011, desc: 'Dragons, betrayal, and the greatest TV run ever.' },
+  { title: 'Harry Potter', type: 'movie', genres: ['fantasy','drama'], moods: ['pumped','chill','emotional'], time: 'epic', era: '2000s', intensity: 'light', year: 2001, desc: 'The wizarding world. Your childhood in 8 films.' },
+  { title: 'Dark', type: 'series', genres: ['dark','sci-fi','thriller'], moods: ['thoughtful','tense'], time: 'binge', era: '2010s', intensity: 'heavy', year: 2017, desc: 'German time-travel. Have a notebook ready.' },
+  { title: 'The Witcher', type: 'series', genres: ['fantasy','action','dark'], moods: ['pumped','tense'], time: 'binge', era: 'recent', intensity: 'medium', year: 2019, desc: 'Monster hunter with a heart of cold steel.' },
+  { title: 'Alice in Borderland', type: 'series', genres: ['fantasy','action','thriller','dark'], moods: ['tense','pumped','thoughtful'], time: 'binge', era: 'recent', intensity: 'heavy', year: 2020, desc: 'Japanese death game. Squid Game on steroids.' },
+
+  // ── Drama ──
+  { title: 'The Shawshank Redemption', type: 'movie', genres: ['drama'], moods: ['emotional','thoughtful','pumped'], time: 'standard', era: 'classic', intensity: 'medium', year: 1994, desc: 'Hope is a good thing. The best film ever made.' },
+  { title: 'The Godfather', type: 'movie', genres: ['drama','thriller','dark'], moods: ['thoughtful','tense'], time: 'epic', era: 'classic', intensity: 'heavy', year: 1972, desc: 'The mafia masterpiece. An offer you can\'t refuse.' },
+  { title: 'Succession', type: 'series', genres: ['drama','comedy','dark'], moods: ['tense','funny','thoughtful'], time: 'binge', era: 'recent', intensity: 'medium', year: 2018, desc: 'Rich family chaos. The best written show ever.' },
+  { title: 'Fight Club', type: 'movie', genres: ['drama','thriller'], moods: ['pumped','thoughtful'], time: 'standard', era: 'classic', intensity: 'heavy', year: 1999, desc: 'First rule: we don\'t talk about it. Second rule: watch it.' },
+  { title: 'Better Call Saul', type: 'series', genres: ['drama','comedy','thriller'], moods: ['thoughtful','funny','tense'], time: 'epic', era: '2010s', intensity: 'medium', year: 2015, desc: 'Breaking Bad\'s prequel. Somehow even better.' },
+  { title: 'Goodfellas', type: 'movie', genres: ['drama','thriller','dark'], moods: ['pumped','thoughtful','tense'], time: 'standard', era: 'classic', intensity: 'heavy', year: 1990, desc: 'Scorsese\'s gangster masterpiece. Laughs, violence, style.' },
+  { title: 'The Truman Show', type: 'movie', genres: ['drama','comedy','sci-fi'], moods: ['thoughtful','funny','emotional'], time: 'quick', era: 'classic', intensity: 'light', year: 1998, desc: 'His life is a TV show. He doesn\'t know.' },
+  { title: 'The Crown', type: 'series', genres: ['drama'], moods: ['thoughtful','chill'], time: 'epic', era: '2010s', intensity: 'light', year: 2016, desc: 'The British monarchy. Grand, elegant, addictive.' },
+
+  // ── Extra heavy hitters ──
+  { title: 'Peaky Blinders', type: 'series', genres: ['drama','thriller','dark'], moods: ['pumped','tense','thoughtful'], time: 'binge', era: '2010s', intensity: 'heavy', year: 2013, desc: 'Post-WWI Birmingham. Tommy Shelby owns every scene.' },
+  { title: 'Narcos', type: 'series', genres: ['drama','thriller','action'], moods: ['tense','pumped'], time: 'binge', era: '2010s', intensity: 'heavy', year: 2015, desc: 'Pablo Escobar. The drug war. Gripping from episode one.' },
+  { title: 'Whiplash', type: 'movie', genres: ['drama'], moods: ['pumped','tense','emotional'], time: 'quick', era: '2010s', intensity: 'heavy', year: 2014, desc: 'Drumming has never been this intense. Not my tempo.' },
+  { title: 'Squid Game', type: 'series', genres: ['thriller','drama','dark','action'], moods: ['tense','pumped','emotional'], time: 'binge', era: 'recent', intensity: 'heavy', year: 2021, desc: 'Deadly children\'s games. Global phenomenon for a reason.' },
+  { title: 'The Social Network', type: 'movie', genres: ['drama'], moods: ['thoughtful','pumped'], time: 'standard', era: '2010s', intensity: 'light', year: 2010, desc: 'Facebook\'s origin. Zuckerberg vs everyone. Brilliant.' },
+  { title: 'Pulp Fiction', type: 'movie', genres: ['drama','comedy','thriller','dark'], moods: ['funny','thoughtful','chill'], time: 'standard', era: 'classic', intensity: 'medium', year: 1994, desc: 'Tarantino\'s non-linear masterpiece of cool.' },
+];
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  STATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let currentSlide = 0;
+const answers = {};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  DOM refs
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const container = document.getElementById('slidesContainer');
+const btnNext = document.getElementById('btnNext');
+const progressFill = document.getElementById('progressFill');
+const qCount = document.getElementById('qCount');
+const qName = document.getElementById('qName');
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  RENDER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderSlides() {
+  container.innerHTML = QUESTIONS.map((q, i) => {
+    const optClass = q.cols === 1 ? '' : `options-${q.cols}`;
+    return `
+      <div class="slide ${i === 0 ? 'active' : ''}" data-idx="${i}">
+        <div class="q-label">${q.label}</div>
+        <div class="q-title">${q.title}</div>
+        <div class="q-sub">${q.sub}</div>
+        <div class="options ${optClass}">
+          ${q.options.map(o => `
+            <div class="${q.cols === 1 ? 'option-full' : 'option'}" data-q="${q.id}" data-val="${o.val}">
+              <span class="emoji">${o.emoji}</span>
+              <span class="label">${o.label}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+  updateProgress();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  NAVIGATION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function goToSlide(idx) {
+  const slides = container.querySelectorAll('.slide');
+  slides.forEach(s => s.classList.remove('active', 'exit-left'));
+  if (idx > currentSlide) {
+    slides[currentSlide].classList.add('exit-left');
+  }
+  slides[idx].classList.add('active');
+  currentSlide = idx;
+  updateProgress();
+  btnNext.textContent = currentSlide === QUESTIONS.length - 1 ? '🎯 Show Me' : 'Next →';
+  btnNext.classList.toggle('enabled', !!answers[QUESTIONS[currentSlide]?.id]);
+  // scroll results if on last slide
+  if (currentSlide === QUESTIONS.length) {
+    setTimeout(() => document.querySelector('.results-scroll')?.scrollTo({ top: 0 }), 100);
+  }
+}
+
+function updateProgress() {
+  const total = QUESTIONS.length;
+  const pct = Math.round((currentSlide / total) * 100);
+  progressFill.style.width = pct + '%';
+  qCount.textContent = `${currentSlide + 1} / ${total}`;
+  qName.textContent = currentSlide < total ? QUESTIONS[currentSlide].label : 'Results';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  SELECTION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+container.addEventListener('click', e => {
+  const opt = e.target.closest('.option, .option-full');
+  if (!opt) return;
+  const qId = opt.dataset.q;
+  const val = opt.dataset.val;
+  const parent = opt.closest('.slide');
+  // deselect siblings
+  parent.querySelectorAll('.option, .option-full').forEach(el => el.classList.remove('selected'));
+  opt.classList.add('selected');
+  answers[qId] = val;
+  btnNext.classList.add('enabled');
+});
+
+btnNext.addEventListener('click', () => {
+  if (!btnNext.classList.contains('enabled')) return;
+  if (currentSlide < QUESTIONS.length - 1) {
+    goToSlide(currentSlide + 1);
+  } else {
+    showResults();
+  }
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  ALGORITHM — weighted scoring
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function recommend() {
+  const scored = DB.map(item => {
+    let score = 0;
+
+    // Mood match (+30)
+    if (item.moods.includes(answers.mood)) score += 30;
+
+    // Genre match (+25)
+    if (item.genres.includes(answers.genre)) score += 25;
+
+    // Type match (+20)
+    if (answers.type === 'either') score += 10; // partial
+    else if (item.type === answers.type) score += 20;
+
+    // Time match (+10)
+    const timeMap = {
+      'quick': 'quick', 'standard': 'standard', 'binge': 'binge', 'epic': 'epic'
+    };
+    if (answers.time === 'quick' && item.time === 'quick') score += 10;
+    else if (answers.time === 'standard' && item.time === 'standard') score += 10;
+    else if (answers.time === 'binge' && (item.time === 'binge' || item.time === 'epic')) score += 8;
+    else if (answers.time === 'epic' && item.time === 'epic') score += 10;
+    else if (answers.time === 'standard' && item.time === 'quick') score += 5;
+    else if (answers.time === 'binge' && item.time === 'standard') score += 4;
+
+    // Era match (+10)
+    const eraMap = {
+      'classic': ['classic'],
+      '2000s': ['2000s'],
+      'recent': ['recent'],
+      'any': ['classic','2000s','2010s','recent']
+    };
+    if (eraMap[answers.era]?.includes(item.era)) score += 10;
+
+    // Intensity match (+5)
+    if (item.intensity === answers.intensity) score += 5;
+    else if (answers.intensity === 'medium' && item.intensity === 'heavy') score += 2;
+    else if (answers.intensity === 'medium' && item.intensity === 'light') score += 2;
+
+    // Dark genre bonus
+    if (answers.mood === 'tense' && item.genres.includes('dark')) score += 3;
+    if (answers.mood === 'chill' && item.genres.includes('comedy')) score += 3;
+
+    return { ...item, score };
+  });
+
+  // Sort by score descending, then pick top 3
+  scored.sort((a, b) => b.score - a.score);
+  // Deduplicate — ensure we don't show same franchise twice
+  const top = [];
+  const seen = new Set();
+  for (const item of scored) {
+    if (top.length >= 5) break;
+    const key = item.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!seen.has(key)) {
+      seen.add(key);
+      top.push(item);
+    }
+  }
+  return top.slice(0, 3);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  RESULTS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function showResults() {
+  // Show loading
+  container.innerHTML = `
+    <div class="slide active">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Reading your vibe...</p>
+      </div>
+    </div>
+  `;
+  btnNext.classList.remove('enabled');
+  btnNext.textContent = '✨';
+
+  setTimeout(() => {
+    const picks = recommend();
+    const rankEmojis = ['🥇', '🥈', '🥉'];
+    const ranks = ['Top Pick', 'Second Pick', 'Third Pick'];
+
+    container.innerHTML = `
+      <div class="slide active results-wrap">
+        <div class="results-header">
+          <div>
+            <h2>Your Picks 🎯</h2>
+            <div class="sub">Based on your vibe, here's what hits</div>
+          </div>
+        </div>
+        <div class="results-scroll">
+          ${picks.map((item, i) => `
+            <div class="result-card fade-in" style="animation-delay: ${i * 0.12}s">
+              <div class="rank">${rankEmojis[i]} ${ranks[i]} · Score ${item.score}</div>
+              <div class="title">${item.title}</div>
+              <div class="meta">${item.year} · ${item.type === 'movie' ? '🎬 Movie' : '📺 Series'} · ${item.intensity === 'light' ? '🌿 Light' : item.intensity === 'medium' ? '⚡ Medium' : '🌋 Heavy'}</div>
+              <div class="tags">
+                ${item.genres.map(g => `<span class="tag">${g}</span>`).join('')}
+                ${item.moods.map(m => `<span class="tag">${m}</span>`).join('')}
+              </div>
+              <div class="desc">${item.desc}</div>
+            </div>
+          `).join('')}
+          <div class="results-cta fade-in" style="animation-delay: 0.4s">
+            <button class="btn-retake" onclick="retake()">↻ Retake</button>
+            <button class="btn-share" onclick="sharePicks()">📤 Share</button>
+          </div>
+        </div>
+      </div>
+    `;
+    progressFill.style.width = '100%';
+    qCount.textContent = '🎉 Done';
+    qName.textContent = 'Results';
+    btnNext.textContent = '↻ Retake';
+    btnNext.classList.add('enabled');
+    btnNext.onclick = retake;
+  }, 800);
+}
+
+function retake() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  currentSlide = 0;
+  btnNext.onclick = null; // reset
+  renderSlides();
+  btnNext.textContent = 'Next →';
+  btnNext.classList.remove('enabled');
+  // Re-attach event (the old one was from showResults)
+  // The click listener already handles via closure, but we need to reset btnNext.onclick
+  btnNext.onclick = () => {
+    if (!btnNext.classList.contains('enabled')) return;
+    if (currentSlide < QUESTIONS.length - 1) {
+      goToSlide(currentSlide + 1);
+    } else {
+      showResults();
+    }
+  };
+}
+
+function sharePicks() {
+  const picks = document.querySelectorAll('.result-card .title');
+  if (!picks.length) return;
+  const titles = Array.from(picks).map(el => el.textContent);
+  const text = `🎬 ReelVibe recommends:\n\n🥇 ${titles[0]}\n🥈 ${titles[1]}\n🥉 ${titles[2]}\n\nFind your vibe →`;
+  if (navigator.share) {
+    navigator.share({ title: 'ReelVibe Picks', text }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      btnNext.textContent = '✓ Copied!';
+      setTimeout(() => { btnNext.textContent = '↻ Retake'; }, 1500);
+    }).catch(() => {});
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//  BOOT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+renderSlides();
+btnNext.onclick = () => {
+  if (!btnNext.classList.contains('enabled')) return;
+  if (currentSlide < QUESTIONS.length - 1) {
+    goToSlide(currentSlide + 1);
+  } else {
+    showResults();
+  }
+};
+</script>
+</body>
+</html>
