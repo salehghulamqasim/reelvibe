@@ -32,6 +32,7 @@
       --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:24px;
       --spring:cubic-bezier(0.34,1.56,0.64,1);
       --ease-out:cubic-bezier(0.16,1,0.3,1);
+      --safe-b: env(safe-area-inset-bottom, 0px);
     }
     @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
     *,::before,::after{box-sizing:border-box;margin:0;padding:0}
@@ -39,22 +40,23 @@
     .bg-amb{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 70% 50% at 15% 25%,rgba(124,58,237,0.08) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 75%,rgba(167,139,250,0.06) 0%,transparent 60%),radial-gradient(ellipse 40% 35% at 50% 50%,rgba(236,72,153,0.04) 0%,transparent 50%);animation:amb 25s ease-in-out infinite alternate}
     @keyframes amb{0%{transform:scale(1)}100%{transform:scale(1.08)rotate(2deg)}}
     .bg-amb::after{content:'';position:fixed;inset:0;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
-    #app{position:relative;z-index:1;height:100dvh;max-width:480px;margin:0 auto;display:flex;flex-direction:column;padding:0 var(--s5)}
+    #app{position:relative;z-index:1;height:100dvh;max-width:480px;margin:0 auto;display:flex;flex-direction:column;padding:0 var(--s5);padding-bottom:var(--safe-b)}
     /* Header */
     .hd{padding:var(--s10) 0 var(--s2);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
     .hd-brand{display:flex;align-items:center;gap:var(--s3);font-size:var(--f-xl);font-weight:800;letter-spacing:-0.3px}
     .hd-brand svg{width:28px;height:28px;flex-shrink:0}
     .hd-actions{display:flex;align-items:center;gap:var(--s2)}
-    .hd-wl-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:var(--s1);border-radius:50%;transition:all 0.2s ease;display:flex;align-items:center;-webkit-tap-highlight-color:transparent}
-    .hd-wl-btn:active{transform:scale(0.9)}
-    .hd-wl-btn svg{width:20px;height:20px}
-    .hd-wl-btn:hover{color:var(--primary-l)}
-    .hd-step{font-size:var(--f-md);font-weight:500;color:var(--text3);letter-spacing:0.3px}
-    .hd-step span{color:var(--primary-l)}
+    .hd-wl-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:var(--s2) var(--s3);border-radius:var(--r-sm);transition:all 0.2s ease;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;font-family:inherit;font-size:var(--f-sm);font-weight:600;letter-spacing:0.2px}
+    .hd-wl-btn:active{transform:scale(0.93)}
+    .hd-wl-btn svg{width:18px;height:18px;flex-shrink:0}
+    .hd-wl-btn:hover{color:var(--primary-l);background:rgba(124,58,237,0.08)}
+    .hd-step{font-size:var(--f-xs);font-weight:500;color:var(--text3);letter-spacing:0.3px;white-space:nowrap}
+    .hd-step span{color:var(--primary-l);font-weight:600}
     .pr{padding:0 0 var(--s6);flex-shrink:0}
     .pr-track{height:4px;background:var(--bg-card);border-radius:4px;overflow:hidden}
     .pr-fill{height:100%;border-radius:4px;width:0%;background:var(--grad);transition:width 0.6s var(--spring);position:relative}
     .pr-fill::after{content:'';position:absolute;right:-3px;top:-2px;width:8px;height:8px;border-radius:50%;background:var(--primary);opacity:0.5;filter:blur(4px)}
+    .pr-fill.done{background:linear-gradient(135deg, #34d399, #7c3aed)}
     .sl{flex:1;position:relative;overflow:hidden;margin:0 calc(-1*var(--s2));padding:0 var(--s2)}
     .slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateY(20px) scale(0.97);transition:opacity 0.45s var(--ease-out),transform 0.5s var(--spring);pointer-events:none}
     .slide.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
@@ -83,7 +85,8 @@
     .chip-wrap::-webkit-scrollbar{width:3px}
     .chip-wrap::-webkit-scrollbar-thumb{background:var(--bg-hover);border-radius:3px}
     .chip-grid{display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:center;width:100%}
-    .chip{display:inline-flex;align-items:center;gap:4px;padding:6px var(--s3);border-radius:100px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;transition:all 0.2s var(--spring);font-size:var(--f-sm);font-weight:500;color:var(--text2);-webkit-tap-highlight-color:transparent;flex-shrink:0}
+    .chip{display:inline-flex;align-items:center;gap:4px;padding:6px var(--s3);border-radius:100px;background:var(--bg-card);border:1px solid var(--border);cursor:pointer;transition:all 0.2s var(--spring);font-size:var(--f-sm);font-weight:500;color:var(--text2);-webkit-tap-highlight-color:transparent;flex-shrink:0;outline:none}
+    .chip:focus-visible{box-shadow:0 0 0 2px var(--primary)}
     .chip:active{transform:scale(0.93)}
     .chip svg{width:14px;height:14px;color:var(--text3);flex-shrink:0}
     .chip.selected{background:var(--bg-chip);border-color:var(--border-chip);color:var(--primary-l)}
@@ -103,11 +106,12 @@
     .opt-fw.selected svg{color:var(--primary-l)}
     .opt-fw.selected .lbl{color:var(--text)}
     .nv{padding:var(--s4) 0 var(--s8);flex-shrink:0}
-    .btn-pri{width:100%;padding:var(--s5);border:none;border-radius:var(--r-md);font-size:var(--f-lg);font-weight:600;font-family:inherit;background:var(--grad);color:#fff;cursor:pointer;transition:all 0.25s var(--spring);opacity:0.2;pointer-events:none}
+    .btn-pri{width:100%;padding:var(--s5);border:none;border-radius:var(--r-md);font-size:var(--f-lg);font-weight:600;font-family:inherit;background:var(--grad);color:#fff;cursor:pointer;transition:all 0.25s var(--spring);opacity:0.2;pointer-events:none;display:flex;align-items:center;justify-content:center;gap:var(--s2)}
     .btn-pri.enabled{opacity:1;pointer-events:auto}
     .btn-pri.enabled:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(124,58,237,0.25)}
     .btn-pri:active{transform:scale(0.97)}
-    .btn-pri svg{width:18px;height:18px;display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0}
+    .btn-pri .btn-arrow{width:18px;height:18px;flex-shrink:0;transition:transform 0.2s ease}
+    .btn-pri.enabled .btn-arrow{transform:translateX(3px)}
     .hint{text-align:center;margin-top:var(--s2);font-size:var(--f-sm);color:var(--text3)}
     /* Results */
     .rv{flex:1;display:flex;flex-direction:column;padding-top:var(--s1);min-height:0}
@@ -118,11 +122,12 @@
     .rv-scroll::-webkit-scrollbar{width:3px}
     .rv-scroll::-webkit-scrollbar-thumb{background:var(--bg-hover);border-radius:3px}
     .taste{display:flex;flex-wrap:wrap;gap:var(--s1);padding:var(--s2) var(--s3);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:var(--s3);width:100%}
-    .taste-pill{font-size:var(--f-xs);font-weight:500;padding:2px var(--s2);border-radius:100px;background:var(--bg-chip);color:var(--primary-l);border:1px solid var(--border-chip)}
+    .taste-pill{font-size:var(--f-xs);font-weight:600;padding:3px var(--s2);border-radius:100px;background:var(--bg-chip);color:var(--primary-l);border:1px solid var(--border-chip);text-transform:capitalize;letter-spacing:0.3px}
     .rc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);margin-bottom:var(--s2);position:relative;overflow:hidden;cursor:pointer;transition:all 0.15s ease;-webkit-tap-highlight-color:transparent}
     .rc:active{transform:scale(0.98)}
     .rc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-acc);opacity:0.5}
     .rc .rank{display:flex;align-items:center;gap:var(--s1);font-size:var(--f-sm);font-weight:600;color:var(--primary-l);text-transform:uppercase;letter-spacing:1px;margin-bottom:var(--s1)}
+    .rc .rank svg{width:14px;height:14px}
     .rc .title{font-size:var(--f-2xl);font-weight:700;letter-spacing:-0.2px;margin-bottom:var(--s1)}
     .rc .meta{display:flex;align-items:center;gap:var(--s2);font-size:var(--f-sm);color:var(--text2);margin-bottom:var(--s2);flex-wrap:wrap}
     .rc .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text3);flex-shrink:0}
@@ -144,7 +149,7 @@
     .exp-in .row{display:flex;flex-direction:column;gap:2px}
     .exp-in .row .lbl{font-size:var(--f-xs);color:var(--text3);text-transform:uppercase;letter-spacing:0.5px}
     .exp-in .row .val{font-size:var(--f-sm);color:var(--text2);font-weight:500}
-    .rbar{display:flex;gap:var(--s2);flex-shrink:0;padding:var(--s2) 0 var(--s4)}
+    .rbar{display:flex;gap:var(--s2);flex-shrink:0;padding:var(--s2) 0 calc(var(--s4) + var(--safe-b))}
     .rbar button{flex:1;padding:var(--s2) var(--s3);border:none;border-radius:var(--r-md);font-size:var(--f-sm);font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.15s ease;min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:4px}.rbar button:active{transform:scale(0.96)}
     .rbar button svg{width:14px;height:14px;flex-shrink:0}
     .btn-ref{background:var(--bg-card);color:var(--text2);border:1px solid var(--border)}
@@ -158,7 +163,7 @@
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .mo{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.25s ease}
     .mo.open{opacity:1;pointer-events:auto}
-    .modal{width:100%;max-width:480px;margin:0 auto;background:#11111d;border-radius:var(--r-xl) var(--r-xl) 0 0;padding:var(--s5) var(--s5) var(--s10);max-height:70vh;overflow-y:auto;transform:translateY(100%);border-top:1px solid var(--border);transition:transform 0.4s var(--spring)}
+    .modal{width:100%;max-width:480px;margin:0 auto;background:#11111d;border-radius:var(--r-xl) var(--r-xl) 0 0;padding:var(--s5) var(--s5) calc(var(--s10) + var(--safe-b));max-height:70vh;overflow-y:auto;transform:translateY(100%);border-top:1px solid var(--border);transition:transform 0.4s var(--spring)}
     .mo.open .modal{transform:translateY(0)}
     .mh{width:36px;height:4px;background:var(--text3);border-radius:4px;margin:0 auto var(--s4);opacity:0.3}
     .modal h3{font-size:var(--f-2xl);font-weight:700;margin-bottom:var(--s1)}
@@ -172,7 +177,7 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .anim-in{animation:fadeUp 0.45s var(--ease-out) forwards;opacity:0}
     .d1{animation-delay:0.1s}.d2{animation-delay:0.18s}.d3{animation-delay:0.26s}.d4{animation-delay:0.34s}.d5{animation-delay:0.42s}.d6{animation-delay:0.5s}
-    @media(max-width:380px){#app{padding:0 var(--s4)}.q-title{font-size:var(--f-3xl)}.opt svg{width:22px;height:22px}.opt .lbl{font-size:var(--f-xs)}.opt{padding:var(--s3) var(--s1);min-height:64px}.hd{padding-top:var(--s8)}.chip{padding:5px var(--s2);font-size:var(--f-xs)}.chip svg{width:12px;height:12px}}
+    @media(max-width:380px){#app{padding:0 var(--s4)}.q-title{font-size:var(--f-3xl)}.opt svg{width:22px;height:22px}.opt .lbl{font-size:var(--f-xs)}.opt{padding:var(--s3) var(--s1);min-height:64px}.hd{padding-top:var(--s8)}.chip{padding:5px var(--s2);font-size:var(--f-xs)}.chip svg{width:12px;height:12px}.hd-wl-btn span{display:none}}
     @media(min-width:481px){#app{border-left:1px solid var(--border);border-right:1px solid var(--border)}}
   </style>
 </head>
@@ -185,7 +190,10 @@
       ReelVibe
     </div>
     <div class="hd-actions">
-      <button class="hd-wl-btn" id="hdWlBtn" onclick="openWL()" aria-label="Watchlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+      <button class="hd-wl-btn" id="hdWlBtn" onclick="openWL()" aria-label="Watchlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+        <span>Watchlist</span>
+      </button>
       <div class="hd-step" id="hdSt"></div>
     </div>
   </div>
@@ -197,9 +205,7 @@
 <div class="mo" id="wlM"><div class="modal" onclick="event.stopPropagation()"><div class="mh"></div><h3>Watchlist</h3><div class="sub" id="wlC">0 saved</div><div id="wlL"></div></div></div>
 
 <script>
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ICONS
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const I={
 pumped:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>',
 thoughtful:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 10h.01M15 10h.01M9.05 15.5A5.5 5.5 0 0015 15"/></svg>',
@@ -237,11 +243,12 @@ share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="
 list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
 check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
 plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>',
+star:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
+trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2Z"/></svg>',
 };
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // QUESTIONS (5)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const Q = [
   { id:'type', num:'01', title:'Movie or series?', sub:'Choose your commitment level', cols:3, opts:[
     {i:'movie',l:'Movie'},{i:'series',l:'Series'},{i:'either',l:'No preference'}
@@ -265,94 +272,90 @@ const Q = [
   ]},
 ];
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // DATABASE — 80+ hand-picked titles
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const DB = [
-  {t:'Interstellar',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],e:'light',er:'era2010s',y:2014,d:'Love, time, and survival across the cosmos','rt':8.7,cn:'none',pl:['Netflix']},
-  {t:'The Matrix',ty:'movie',g:['sci-fi','action'],m:['pumped','thoughtful'],e:'heavy',er:'pre2000',y:1999,d:'Reality is a simulation. Take the red pill.','rt':8.7,cn:'moderate',pl:['Prime']},
-  {t:'Black Mirror',ty:'series',g:['sci-fi','thriller','dark'],m:['thoughtful','tense'],e:'heavy',er:'era2010s',y:2011,d:'Dark tech anthology. Haunts you long after.','rt':8.8,cn:'heavy',pl:['Netflix']},
-  {t:'Dune',ty:'movie',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'era2020s',y:2021,d:'Spice, sandworms, and interstellar war.','rt':8.0,cn:'none',pl:['Netflix']},
-  {t:'Severance',ty:'series',g:['sci-fi','thriller','drama'],m:['thoughtful','tense'],e:'medium',er:'era2020s',y:2022,d:'Work-life balance taken to chilling extremes.','rt':8.7,cn:'mild',pl:['Apple TV']},
-  {t:'Arrival',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],e:'light',er:'era2010s',y:2016,d:'Aliens, language, and time — beautifully bent.','rt':7.9,cn:'none',pl:['Netflix']},
-  {t:'Blade Runner 2049',ty:'movie',g:['sci-fi','drama','thriller'],m:['thoughtful','chill'],e:'medium',er:'era2010s',y:2017,d:'What makes us human? A slow-burn masterpiece.','rt':8.0,cn:'moderate',pl:['Netflix']},
-  {t:'The Expanse',ty:'series',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'era2010s',y:2015,d:'Hard sci-fi politics across the solar system.','rt':8.5,cn:'moderate',pl:['Prime']},
-  {t:'John Wick',ty:'movie',g:['action','thriller'],m:['pumped','tense'],e:'heavy',er:'era2010s',y:2014,d:'Man + dog + guns = cinematic perfection.','rt':7.4,cn:'heavy',pl:['Netflix']},
-  {t:'Mad Max: Fury Road',ty:'movie',g:['action','sci-fi'],m:['pumped'],e:'heavy',er:'era2010s',y:2015,d:'Two hours of gasoline-fueled insanity.','rt':8.1,cn:'heavy',pl:['Netflix']},
-  {t:'The Dark Knight',ty:'movie',g:['action','thriller','drama'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2000s',y:2008,d:'The greatest superhero film ever. Period.','rt':9.0,cn:'moderate',pl:['Netflix']},
-  {t:'Parasite',ty:'movie',g:['comedy','thriller','drama'],m:['thoughtful','tense','funny'],e:'medium',er:'era2020s',y:2019,d:'Class satire that can be funny, tense, and unforgettable.','rt':8.5,cn:'moderate',pl:['Netflix']},
-  {t:'Breaking Bad',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2000s',y:2008,d:'Walter White. The greatest TV character ever written.','rt':9.5,cn:'heavy',pl:['Netflix']},
-  {t:'Better Call Saul',ty:'series',g:['drama','comedy','thriller','crime'],m:['thoughtful','funny','tense'],e:'medium',er:'era2010s',y:2015,d:'Breaking Bad prequel. Somehow even better.','rt':8.9,cn:'moderate',pl:['Netflix']},
-  {t:'Succession',ty:'series',g:['drama','comedy','dark'],m:['tense','funny','thoughtful'],e:'medium',er:'era2020s',y:2018,d:'Rich family chaos. Best written show ever.','rt':8.8,cn:'moderate',pl:['Netflix']},
-  {t:'Dark',ty:'series',g:['dark','sci-fi','thriller'],m:['thoughtful','tense'],e:'heavy',er:'era2010s',y:2017,d:'German time-travel. Have a notebook ready.','rt':8.7,cn:'moderate',pl:['Netflix']},
-  {t:'Squid Game',ty:'series',g:['thriller','drama','dark','action'],m:['tense','pumped','emotional'],e:'heavy',er:'era2020s',y:2021,d:'Deadly children games. A global phenomenon.','rt':8.0,cn:'heavy',pl:['Netflix']},
-  {t:'Shawshank Redemption',ty:'movie',g:['drama','crime'],m:['emotional','thoughtful','pumped'],e:'medium',er:'pre2000',y:1994,d:'Hope is a good thing. The best film ever made.','rt':9.3,cn:'mild',pl:['Netflix']},
-  {t:'Inception',ty:'movie',g:['sci-fi','action','thriller'],m:['thoughtful','pumped','tense'],e:'medium',er:'era2010s',y:2010,d:'Dream within a dream within a dream.','rt':8.8,cn:'moderate',pl:['Netflix']},
-  {t:'Stranger Things',ty:'series',g:['sci-fi','drama','horror'],m:['pumped','emotional','funny'],e:'medium',er:'era2010s',y:2016,d:'80s nostalgia meets supernatural thrills.','rt':8.7,cn:'mild',pl:['Netflix']},
-  {t:'Chernobyl',ty:'series',g:['drama','thriller'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2019,d:'The nuclear disaster. The most terrifying non-horror ever.','rt':9.3,cn:'heavy',pl:['Netflix']},
-  {t:'Everything Everywhere All at Once',ty:'movie',g:['sci-fi','comedy','drama','action'],m:['thoughtful','funny','emotional'],e:'medium',er:'era2020s',y:2022,d:'Multiverse chaos with a heart of gold.','rt':7.8,cn:'mild',pl:['Netflix']},
-  {t:'Arcane',ty:'series',g:['fantasy','action','drama','sci-fi','animation'],m:['pumped','emotional','thoughtful'],e:'medium',er:'era2020s',y:2021,d:'The best animated series ever made. Period.','rt':9.0,cn:'moderate',pl:['Netflix']},
-  {t:'Oppenheimer',ty:'movie',g:['drama','thriller'],m:['thoughtful','tense','pumped'],e:'heavy',er:'era2020s',y:2023,d:'The bomb. The man. The guilt. A cinematic triumph.','rt':8.3,cn:'moderate',pl:['Netflix']},
-  {t:'The Bear',ty:'series',g:['drama','comedy'],m:['tense','emotional','funny'],e:'medium',er:'era2020s',y:2022,d:'Kitchen chaos. Anxiety and heart in every dish.','rt':8.6,cn:'mild',pl:['Hulu']},
-  {t:'Peaky Blinders',ty:'series',g:['drama','thriller','dark','crime'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2013,d:'Tommy Shelby owns every single scene.','rt':8.8,cn:'heavy',pl:['Netflix']},
-  {t:'The Godfather',ty:'movie',g:['drama','thriller','dark','crime'],m:['thoughtful','tense'],e:'heavy',er:'pre2000',y:1972,d:'The mafia masterpiece. An offer you cannot refuse.','rt':9.2,cn:'heavy',pl:['Netflix']},
-  {t:'Fight Club',ty:'movie',g:['drama','thriller'],m:['pumped','thoughtful'],e:'heavy',er:'pre2000',y:1999,d:'First rule: we don not talk about it.','rt':8.8,cn:'heavy',pl:['Netflix']},
-  {t:'Pulp Fiction',ty:'movie',g:['drama','comedy','thriller','dark','crime'],m:['funny','thoughtful','chill'],e:'medium',er:'pre2000',y:1994,d:'Tarantino non-linear masterpiece of cool.','rt':8.9,cn:'heavy',pl:['Netflix']},
-  {t:'True Detective S1',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2014,d:'Rust Cohle. The Yellow King. A masterpiece.','rt':8.9,cn:'heavy',pl:['Netflix']},
-  {t:'The Office (US)',ty:'series',g:['comedy'],m:['funny','chill'],e:'light',er:'era2000s',y:2005,d:'The ultimate comfort show. Cringe, heart, repeat.','rt':8.9,cn:'mild',pl:['Netflix']},
-  {t:'Ted Lasso',ty:'series',g:['comedy','drama'],m:['funny','chill','emotional'],e:'light',er:'era2020s',y:2020,d:'The show that makes you believe in kindness again.','rt':8.8,cn:'none',pl:['Apple TV']},
-  {t:'Lord of the Rings',ty:'movie',g:['fantasy','action','drama'],m:['pumped','emotional','thoughtful'],e:'medium',er:'pre2000',y:2001,d:'The definitive fantasy epic. One ring to rule them all.','rt':8.8,cn:'moderate',pl:['Netflix']},
-  {t:'Game of Thrones',ty:'series',g:['fantasy','action','drama','dark'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2011,d:'Dragons, betrayal, and the greatest TV run ever.','rt':9.2,cn:'heavy',pl:['Netflix']},
-  {t:'Alice in Borderland',ty:'series',g:['fantasy','action','thriller','dark'],m:['tense','pumped','thoughtful'],e:'heavy',er:'era2020s',y:2020,d:'Japanese death game. Squid Game on steroids.','rt':7.6,cn:'heavy',pl:['Netflix']},
-  {t:'Money Heist',ty:'series',g:['thriller','action','drama','crime'],m:['tense','pumped'],e:'medium',er:'era2010s',y:2017,d:'The perfect heist. Mask on, brain off.','rt':8.2,cn:'moderate',pl:['Netflix']},
-  {t:'Narcos',ty:'series',g:['drama','thriller','action','crime'],m:['tense','pumped'],e:'heavy',er:'era2010s',y:2015,d:'Pablo Escobar. The drug war. Gripping.','rt':8.8,cn:'heavy',pl:['Netflix']},
-  {t:'Whiplash',ty:'movie',g:['drama'],m:['pumped','tense','emotional'],e:'heavy',er:'era2010s',y:2014,d:'Drumming has never been this intense. Not my tempo.','rt':8.5,cn:'mild',pl:['Netflix']},
-  {t:'The Truman Show',ty:'movie',g:['drama','comedy','sci-fi'],m:['thoughtful','funny','emotional'],e:'light',er:'pre2000',y:1998,d:'His life is a TV show. He does not know.','rt':8.2,cn:'none',pl:['Netflix']},
-  {t:'Goodfellas',ty:'movie',g:['drama','thriller','dark','crime'],m:['pumped','thoughtful','tense'],e:'heavy',er:'pre2000',y:1990,d:'Scorsese gangster masterpiece.','rt':8.7,cn:'heavy',pl:['Netflix']},
-  {t:'Sicario',ty:'movie',g:['thriller','action','drama','crime'],m:['tense','pumped'],e:'heavy',er:'era2010s',y:2015,d:'Denis Villeneuve tension masterclass on the border.','rt':7.7,cn:'heavy',pl:['Netflix']},
-  {t:'The Departed',ty:'movie',g:['drama','thriller','action','crime'],m:['tense','pumped'],e:'heavy',er:'era2000s',y:2006,d:'Rats on both sides. Scorsese at his most electric.','rt':8.5,cn:'heavy',pl:['Netflix']},
-  {t:'The Witcher',ty:'series',g:['fantasy','action','dark'],m:['pumped','tense'],e:'medium',er:'era2020s',y:2019,d:'Monster hunter with a heart of cold steel.','rt':8.0,cn:'heavy',pl:['Netflix']},
-  {t:'Mindhunter',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2017,d:'FBI profilers hunting serial killers. Dark and masterful.','rt':8.6,cn:'heavy',pl:['Netflix']},
-  {t:'Hereditary',ty:'movie',g:['horror','drama'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2018,d:'Horror that sits in your chest for days after.','rt':7.3,cn:'heavy',pl:['Netflix']},
-  {t:'Hill House',ty:'series',g:['horror','drama'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2018,d:'Family trauma dressed as a ghost story.','rt':8.5,cn:'moderate',pl:['Netflix']},
-  {t:'Get Out',ty:'movie',g:['horror','thriller','comedy'],m:['tense','thoughtful','funny'],e:'medium',er:'era2010s',y:2017,d:'Social satire meets horror. Groundbreaking.','rt':7.7,cn:'moderate',pl:['Netflix']},
-  {t:'The Batman',ty:'movie',g:['action','thriller','dark','crime'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2020s',y:2022,d:'A dark detective-driven Batman for a new era.','rt':7.8,cn:'moderate',pl:['Netflix']},
-  {t:'Dune: Part Two',ty:'movie',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'latest',y:2024,d:'The spice must flow. The sequel surpasses the original.','rt':8.6,cn:'moderate',pl:['Netflix']},
-  {t:'Shōgun',ty:'series',g:['drama','action','thriller'],m:['thoughtful','tense','pumped'],e:'heavy',er:'latest',y:2024,d:'Feudal Japan. Samurai, politics, breathtaking scope.','rt':8.8,cn:'heavy',pl:['Disney+']},
-  {t:'The Last of Us',ty:'series',g:['drama','action','horror','sci-fi'],m:['emotional','tense','pumped'],e:'heavy',er:'era2020s',y:2023,d:'Post-apocalyptic. Best video game adaptation ever.','rt':8.7,cn:'heavy',pl:['Netflix']},
-  {t:'Blue Eye Samurai',ty:'series',g:['action','drama','animation','dark'],m:['pumped','tense','emotional'],e:'heavy',er:'era2020s',y:2023,d:'A mixed-race samurai seeking revenge in Edo-era Japan.','rt':8.7,cn:'heavy',pl:['Netflix']},
-  {t:'The Boys',ty:'series',g:['action','comedy','dark','sci-fi'],m:['pumped','funny','tense'],e:'heavy',er:'era2020s',y:2019,d:'Superheroes are corrupt. Someone must take them down.','rt':8.7,cn:'heavy',pl:['Prime']},
-  {t:'Attack on Titan',ty:'series',g:['fantasy','action','dark','animation'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2013,d:'Humanity fights giant titans. Anime epic.','rt':9.0,cn:'heavy',pl:['Netflix']},
-  {t:'Spirited Away',ty:'movie',g:['fantasy','animation','drama'],m:['chill','emotional','thoughtful'],e:'light',er:'pre2000',y:2001,d:'Studio Ghibli masterpiece. A magical unforgettable journey.','rt':8.6,cn:'none',pl:['Netflix']},
-  {t:'Joker',ty:'movie',g:['drama','thriller','dark','crime'],m:['tense','thoughtful','emotional'],e:'heavy',er:'era2020s',y:2019,d:'A descent into madness. Arthur Fleck becomes the Joker.','rt':8.4,cn:'heavy',pl:['Netflix']},
-  {t:'Top Gun: Maverick',ty:'movie',g:['action','drama'],m:['pumped','emotional'],e:'medium',er:'era2020s',y:2022,d:'The legacy sequel nobody asked for but everyone needed.','rt':8.3,cn:'mild',pl:['Netflix']},
-  {t:'House of the Dragon',ty:'series',g:['fantasy','action','drama','dark'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2020s',y:2022,d:'Targaryen civil war. Dragons and political chaos.','rt':8.4,cn:'heavy',pl:['Netflix']},
-  {t:'Baby Reindeer',ty:'series',g:['drama','thriller'],m:['tense','emotional','thoughtful'],e:'heavy',er:'latest',y:2024,d:'Stalking and trauma. The most uncomfortable watch of 2024.','rt':7.7,cn:'heavy',pl:['Netflix']},
-  {t:'The Wire',ty:'series',g:['drama','crime','thriller'],m:['thoughtful','tense','emotional'],e:'heavy',er:'era2000s',y:2002,d:'Baltimore drug war. The greatest TV show ever made.','rt':9.3,cn:'heavy',pl:['Netflix']},
-  {t:'Past Lives',ty:'movie',g:['romance','drama'],m:['emotional','thoughtful','chill'],e:'light',er:'era2020s',y:2023,d:'Two souls across continents and decades. Beautifully quiet.','rt':7.8,cn:'none',pl:['Netflix']},
-  {t:'Soul',ty:'movie',g:['animation','comedy','drama'],m:['thoughtful','emotional','funny'],e:'light',er:'era2020s',y:2020,d:'What makes life worth living? Pixar at its most profound.','rt':8.0,cn:'none',pl:['Disney+']},
-  {t:'Coco',ty:'movie',g:['animation','fantasy','drama'],m:['emotional','funny','chill'],e:'light',er:'era2010s',y:2017,d:'A boy journeys to the Land of the Dead. Bring tissues.','rt':8.4,cn:'none',pl:['Disney+']},
-  {t:'Demon Slayer',ty:'series',g:['fantasy','action','dark','animation'],m:['pumped','emotional'],e:'medium',er:'era2020s',y:2019,d:'The most visually stunning anime ever created.','rt':8.7,cn:'moderate',pl:['Netflix']},
-  {t:'La La Land',ty:'movie',g:['romance','drama','comedy'],m:['emotional','chill','funny'],e:'light',er:'era2010s',y:2016,d:'Dreams, love, and jazz in Los Angeles.','rt':8.0,cn:'none',pl:['Netflix']},
-  {t:'Eternal Sunshine',ty:'movie',g:['romance','sci-fi','drama'],m:['emotional','thoughtful'],e:'medium',er:'era2000s',y:2004,d:'Erase your ex? The science says no. The heart says yes.','rt':8.3,cn:'moderate',pl:['Netflix']},
-  {t:'A Quiet Place',ty:'movie',g:['horror','sci-fi','drama'],m:['tense','emotional'],e:'medium',er:'era2010s',y:2018,d:'Silence is survival. Pure cinematic tension.','rt':7.5,cn:'mild',pl:['Netflix']},
-  {t:'What We Do in the Shadows',ty:'series',g:['comedy','dark'],m:['funny','chill'],e:'light',er:'era2020s',y:2019,d:'Vampire mockumentary. Ridiculously good.','rt':8.6,cn:'heavy',pl:['Hulu']},
-  {t:'Extraction',ty:'movie',g:['action','thriller'],m:['pumped','tense'],e:'heavy',er:'era2020s',y:2020,d:'Non-stop adrenaline with Chris Hemsworth.','rt':6.7,cn:'heavy',pl:['Netflix']},
-  {t:'Sherlock',ty:'series',g:['thriller','drama','crime'],m:['thoughtful','tense','pumped'],e:'medium',er:'era2010s',y:2010,d:'Modern Holmes. Brilliant, fast, addictive.','rt':9.1,cn:'moderate',pl:['Netflix']},
-  {t:'Shutter Island',ty:'movie',g:['thriller','drama','dark'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2010,d:'Is he crazy or is it real? Mind-bending to the end.','rt':8.2,cn:'heavy',pl:['Netflix']},
-  {t:'The Grand Budapest Hotel',ty:'movie',g:['comedy','drama'],m:['funny','chill','emotional'],e:'light',er:'era2010s',y:2014,d:'Wes Anderson colorful charming masterpiece.','rt':8.1,cn:'mild',pl:['Disney+']},
-  {t:'The Crown',ty:'series',g:['drama'],m:['thoughtful','chill'],e:'light',er:'era2010s',y:2016,d:'The British monarchy. Grand, elegant, addictive.','rt':8.6,cn:'mild',pl:['Netflix']},
-  {t:'Gladiator',ty:'movie',g:['action','drama'],m:['pumped','emotional'],e:'heavy',er:'pre2000',y:2000,d:'Are you not entertained? Maximus defines legacy.','rt':8.5,cn:'heavy',pl:['Netflix']},
-  {t:'Se7en',ty:'movie',g:['thriller','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'pre2000',y:1995,d:'Seven deadly sins. One box you will never forget.','rt':8.6,cn:'heavy',pl:['Netflix']},
-  {t:'Prisoners',ty:'movie',g:['thriller','drama','crime'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2013,d:'A father desperation pushed to the absolute edge.','rt':8.1,cn:'heavy',pl:['Netflix']},
-  {t:'Gone Girl',ty:'movie',g:['thriller','drama'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2014,d:'Marriage is a trap. This movie proves it.','rt':8.1,cn:'heavy',pl:['Netflix']},
-  {t:'12 Angry Men',ty:'movie',g:['drama'],m:['thoughtful','tense'],e:'medium',er:'pre2000',y:1957,d:'Twelve men. One room. Absolute perfection.','rt':9.0,cn:'none',pl:['Prime']},
-  {t:'Full Metal Alchemist',ty:'series',g:['fantasy','action','drama','animation'],m:['pumped','emotional','thoughtful'],e:'medium',er:'era2000s',y:2009,d:'Two brothers seek the Philosopher Stone. Anime perfection.','rt':9.1,cn:'moderate',pl:['Netflix']},
+  {t:'Interstellar',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],e:'light',er:'era2010s',y:2014,d:'Love, time, and survival across the cosmos',rt:8.7,cn:'none',pl:['Netflix']},
+  {t:'The Matrix',ty:'movie',g:['sci-fi','action'],m:['pumped','thoughtful'],e:'heavy',er:'pre2000',y:1999,d:'Reality is a simulation. Take the red pill.',rt:8.7,cn:'moderate',pl:['Prime']},
+  {t:'Black Mirror',ty:'series',g:['sci-fi','thriller','dark'],m:['thoughtful','tense'],e:'heavy',er:'era2010s',y:2011,d:'Dark tech anthology. Haunts you long after.',rt:8.8,cn:'heavy',pl:['Netflix']},
+  {t:'Dune',ty:'movie',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'era2020s',y:2021,d:'Spice, sandworms, and interstellar war.',rt:8.0,cn:'none',pl:['Netflix']},
+  {t:'Severance',ty:'series',g:['sci-fi','thriller','drama'],m:['thoughtful','tense'],e:'medium',er:'era2020s',y:2022,d:'Work-life balance taken to chilling extremes.',rt:8.7,cn:'mild',pl:['Apple TV']},
+  {t:'Arrival',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],e:'light',er:'era2010s',y:2016,d:'Aliens, language, and time — beautifully bent.',rt:7.9,cn:'none',pl:['Netflix']},
+  {t:'Blade Runner 2049',ty:'movie',g:['sci-fi','drama','thriller'],m:['thoughtful','chill'],e:'medium',er:'era2010s',y:2017,d:'What makes us human? A slow-burn masterpiece.',rt:8.0,cn:'moderate',pl:['Netflix']},
+  {t:'The Expanse',ty:'series',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'era2010s',y:2015,d:'Hard sci-fi politics across the solar system.',rt:8.5,cn:'moderate',pl:['Prime']},
+  {t:'John Wick',ty:'movie',g:['action','thriller'],m:['pumped','tense'],e:'heavy',er:'era2010s',y:2014,d:'Man + dog + guns = cinematic perfection.',rt:7.4,cn:'heavy',pl:['Netflix']},
+  {t:'Mad Max: Fury Road',ty:'movie',g:['action','sci-fi'],m:['pumped'],e:'heavy',er:'era2010s',y:2015,d:'Two hours of gasoline-fueled insanity.',rt:8.1,cn:'heavy',pl:['Netflix']},
+  {t:'The Dark Knight',ty:'movie',g:['action','thriller','drama'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2000s',y:2008,d:'The greatest superhero film ever. Period.',rt:9.0,cn:'moderate',pl:['Netflix']},
+  {t:'Parasite',ty:'movie',g:['comedy','thriller','drama'],m:['thoughtful','tense','funny'],e:'medium',er:'era2020s',y:2019,d:'Class satire that can be funny, tense, and unforgettable.',rt:8.5,cn:'moderate',pl:['Netflix']},
+  {t:'Breaking Bad',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2000s',y:2008,d:'Walter White. The greatest TV character ever written.',rt:9.5,cn:'heavy',pl:['Netflix']},
+  {t:'Better Call Saul',ty:'series',g:['drama','comedy','thriller','crime'],m:['thoughtful','funny','tense'],e:'medium',er:'era2010s',y:2015,d:'Breaking Bad prequel. Somehow even better.',rt:8.9,cn:'moderate',pl:['Netflix']},
+  {t:'Succession',ty:'series',g:['drama','comedy','dark'],m:['tense','funny','thoughtful'],e:'medium',er:'era2020s',y:2018,d:'Rich family chaos. Best written show ever.',rt:8.8,cn:'moderate',pl:['Netflix']},
+  {t:'Dark',ty:'series',g:['dark','sci-fi','thriller'],m:['thoughtful','tense'],e:'heavy',er:'era2010s',y:2017,d:'German time-travel. Have a notebook ready.',rt:8.7,cn:'moderate',pl:['Netflix']},
+  {t:'Squid Game',ty:'series',g:['thriller','drama','dark','action'],m:['tense','pumped','emotional'],e:'heavy',er:'era2020s',y:2021,d:'Deadly children games. A global phenomenon.',rt:8.0,cn:'heavy',pl:['Netflix']},
+  {t:'Shawshank Redemption',ty:'movie',g:['drama','crime'],m:['emotional','thoughtful','pumped'],e:'medium',er:'pre2000',y:1994,d:'Hope is a good thing. The best film ever made.',rt:9.3,cn:'mild',pl:['Netflix']},
+  {t:'Inception',ty:'movie',g:['sci-fi','action','thriller'],m:['thoughtful','pumped','tense'],e:'medium',er:'era2010s',y:2010,d:'Dream within a dream within a dream.',rt:8.8,cn:'moderate',pl:['Netflix']},
+  {t:'Stranger Things',ty:'series',g:['sci-fi','drama','horror'],m:['pumped','emotional','funny'],e:'medium',er:'era2010s',y:2016,d:'80s nostalgia meets supernatural thrills.',rt:8.7,cn:'mild',pl:['Netflix']},
+  {t:'Chernobyl',ty:'series',g:['drama','thriller'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2019,d:'The nuclear disaster. The most terrifying non-horror ever.',rt:9.3,cn:'heavy',pl:['Netflix']},
+  {t:'Everything Everywhere All at Once',ty:'movie',g:['sci-fi','comedy','drama','action'],m:['thoughtful','funny','emotional'],e:'medium',er:'era2020s',y:2022,d:'Multiverse chaos with a heart of gold.',rt:7.8,cn:'mild',pl:['Netflix']},
+  {t:'Arcane',ty:'series',g:['fantasy','action','drama','sci-fi','animation'],m:['pumped','emotional','thoughtful'],e:'medium',er:'era2020s',y:2021,d:'The best animated series ever made. Period.',rt:9.0,cn:'moderate',pl:['Netflix']},
+  {t:'Oppenheimer',ty:'movie',g:['drama','thriller'],m:['thoughtful','tense','pumped'],e:'heavy',er:'era2020s',y:2023,d:'The bomb. The man. The guilt. A cinematic triumph.',rt:8.3,cn:'moderate',pl:['Netflix']},
+  {t:'The Bear',ty:'series',g:['drama','comedy'],m:['tense','emotional','funny'],e:'medium',er:'era2020s',y:2022,d:'Kitchen chaos. Anxiety and heart in every dish.',rt:8.6,cn:'mild',pl:['Hulu']},
+  {t:'Peaky Blinders',ty:'series',g:['drama','thriller','dark','crime'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2013,d:'Tommy Shelby owns every single scene.',rt:8.8,cn:'heavy',pl:['Netflix']},
+  {t:'The Godfather',ty:'movie',g:['drama','thriller','dark','crime'],m:['thoughtful','tense'],e:'heavy',er:'pre2000',y:1972,d:'The mafia masterpiece. An offer you cannot refuse.',rt:9.2,cn:'heavy',pl:['Netflix']},
+  {t:'Fight Club',ty:'movie',g:['drama','thriller'],m:['pumped','thoughtful'],e:'heavy',er:'pre2000',y:1999,d:'First rule: we don not talk about it.',rt:8.8,cn:'heavy',pl:['Netflix']},
+  {t:'Pulp Fiction',ty:'movie',g:['drama','comedy','thriller','dark','crime'],m:['funny','thoughtful','chill'],e:'medium',er:'pre2000',y:1994,d:'Tarantino non-linear masterpiece of cool.',rt:8.9,cn:'heavy',pl:['Netflix']},
+  {t:'True Detective S1',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2014,d:'Rust Cohle. The Yellow King. A masterpiece.',rt:8.9,cn:'heavy',pl:['Netflix']},
+  {t:'The Office (US)',ty:'series',g:['comedy'],m:['funny','chill'],e:'light',er:'era2000s',y:2005,d:'The ultimate comfort show. Cringe, heart, repeat.',rt:8.9,cn:'mild',pl:['Netflix']},
+  {t:'Ted Lasso',ty:'series',g:['comedy','drama'],m:['funny','chill','emotional'],e:'light',er:'era2020s',y:2020,d:'The show that makes you believe in kindness again.',rt:8.8,cn:'none',pl:['Apple TV']},
+  {t:'Lord of the Rings',ty:'movie',g:['fantasy','action','drama'],m:['pumped','emotional','thoughtful'],e:'medium',er:'pre2000',y:2001,d:'The definitive fantasy epic. One ring to rule them all.',rt:8.8,cn:'moderate',pl:['Netflix']},
+  {t:'Game of Thrones',ty:'series',g:['fantasy','action','drama','dark'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2011,d:'Dragons, betrayal, and the greatest TV run ever.',rt:9.2,cn:'heavy',pl:['Netflix']},
+  {t:'Alice in Borderland',ty:'series',g:['fantasy','action','thriller','dark'],m:['tense','pumped','thoughtful'],e:'heavy',er:'era2020s',y:2020,d:'Japanese death game. Squid Game on steroids.',rt:7.6,cn:'heavy',pl:['Netflix']},
+  {t:'Money Heist',ty:'series',g:['thriller','action','drama','crime'],m:['tense','pumped'],e:'medium',er:'era2010s',y:2017,d:'The perfect heist. Mask on, brain off.',rt:8.2,cn:'moderate',pl:['Netflix']},
+  {t:'Narcos',ty:'series',g:['drama','thriller','action','crime'],m:['tense','pumped'],e:'heavy',er:'era2010s',y:2015,d:'Pablo Escobar. The drug war. Gripping.',rt:8.8,cn:'heavy',pl:['Netflix']},
+  {t:'Whiplash',ty:'movie',g:['drama'],m:['pumped','tense','emotional'],e:'heavy',er:'era2010s',y:2014,d:'Drumming has never been this intense. Not my tempo.',rt:8.5,cn:'mild',pl:['Netflix']},
+  {t:'The Truman Show',ty:'movie',g:['drama','comedy','sci-fi'],m:['thoughtful','funny','emotional'],e:'light',er:'pre2000',y:1998,d:'His life is a TV show. He does not know.',rt:8.2,cn:'none',pl:['Netflix']},
+  {t:'Goodfellas',ty:'movie',g:['drama','thriller','dark','crime'],m:['pumped','thoughtful','tense'],e:'heavy',er:'pre2000',y:1990,d:'Scorsese gangster masterpiece.',rt:8.7,cn:'heavy',pl:['Netflix']},
+  {t:'Sicario',ty:'movie',g:['thriller','action','drama','crime'],m:['tense','pumped'],e:'heavy',er:'era2010s',y:2015,d:'Denis Villeneuve tension masterclass on the border.',rt:7.7,cn:'heavy',pl:['Netflix']},
+  {t:'The Departed',ty:'movie',g:['drama','thriller','action','crime'],m:['tense','pumped'],e:'heavy',er:'era2000s',y:2006,d:'Rats on both sides. Scorsese at his most electric.',rt:8.5,cn:'heavy',pl:['Netflix']},
+  {t:'The Witcher',ty:'series',g:['fantasy','action','dark'],m:['pumped','tense'],e:'medium',er:'era2020s',y:2019,d:'Monster hunter with a heart of cold steel.',rt:8.0,cn:'heavy',pl:['Netflix']},
+  {t:'Mindhunter',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2017,d:'FBI profilers hunting serial killers. Dark and masterful.',rt:8.6,cn:'heavy',pl:['Netflix']},
+  {t:'Hereditary',ty:'movie',g:['horror','drama'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2018,d:'Horror that sits in your chest for days after.',rt:7.3,cn:'heavy',pl:['Netflix']},
+  {t:'Hill House',ty:'series',g:['horror','drama'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2018,d:'Family trauma dressed as a ghost story.',rt:8.5,cn:'moderate',pl:['Netflix']},
+  {t:'Get Out',ty:'movie',g:['horror','thriller','comedy'],m:['tense','thoughtful','funny'],e:'medium',er:'era2010s',y:2017,d:'Social satire meets horror. Groundbreaking.',rt:7.7,cn:'moderate',pl:['Netflix']},
+  {t:'The Batman',ty:'movie',g:['action','thriller','dark','crime'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2020s',y:2022,d:'A dark detective-driven Batman for a new era.',rt:7.8,cn:'moderate',pl:['Netflix']},
+  {t:'Dune: Part Two',ty:'movie',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'latest',y:2024,d:'The spice must flow. The sequel surpasses the original.',rt:8.6,cn:'moderate',pl:['Netflix']},
+  {t:'Shōgun',ty:'series',g:['drama','action','thriller'],m:['thoughtful','tense','pumped'],e:'heavy',er:'latest',y:2024,d:'Feudal Japan. Samurai, politics, breathtaking scope.',rt:8.8,cn:'heavy',pl:['Disney+']},
+  {t:'The Last of Us',ty:'series',g:['drama','action','horror','sci-fi'],m:['emotional','tense','pumped'],e:'heavy',er:'era2020s',y:2023,d:'Post-apocalyptic. Best video game adaptation ever.',rt:8.7,cn:'heavy',pl:['Netflix']},
+  {t:'Blue Eye Samurai',ty:'series',g:['action','drama','animation','dark'],m:['pumped','tense','emotional'],e:'heavy',er:'era2020s',y:2023,d:'A mixed-race samurai seeking revenge in Edo-era Japan.',rt:8.7,cn:'heavy',pl:['Netflix']},
+  {t:'The Boys',ty:'series',g:['action','comedy','dark','sci-fi'],m:['pumped','funny','tense'],e:'heavy',er:'era2020s',y:2019,d:'Superheroes are corrupt. Someone must take them down.',rt:8.7,cn:'heavy',pl:['Prime']},
+  {t:'Attack on Titan',ty:'series',g:['fantasy','action','dark','animation'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2013,d:'Humanity fights giant titans. Anime epic.',rt:9.0,cn:'heavy',pl:['Netflix']},
+  {t:'Spirited Away',ty:'movie',g:['fantasy','animation','drama'],m:['chill','emotional','thoughtful'],e:'light',er:'pre2000',y:2001,d:'Studio Ghibli masterpiece. A magical unforgettable journey.',rt:8.6,cn:'none',pl:['Netflix']},
+  {t:'Joker',ty:'movie',g:['drama','thriller','dark','crime'],m:['tense','thoughtful','emotional'],e:'heavy',er:'era2020s',y:2019,d:'A descent into madness. Arthur Fleck becomes the Joker.',rt:8.4,cn:'heavy',pl:['Netflix']},
+  {t:'Top Gun: Maverick',ty:'movie',g:['action','drama'],m:['pumped','emotional'],e:'medium',er:'era2020s',y:2022,d:'The legacy sequel nobody asked for but everyone needed.',rt:8.3,cn:'mild',pl:['Netflix']},
+  {t:'House of the Dragon',ty:'series',g:['fantasy','action','drama','dark'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2020s',y:2022,d:'Targaryen civil war. Dragons and political chaos.',rt:8.4,cn:'heavy',pl:['Netflix']},
+  {t:'Baby Reindeer',ty:'series',g:['drama','thriller'],m:['tense','emotional','thoughtful'],e:'heavy',er:'latest',y:2024,d:'Stalking and trauma. The most uncomfortable watch of 2024.',rt:7.7,cn:'heavy',pl:['Netflix']},
+  {t:'The Wire',ty:'series',g:['drama','crime','thriller'],m:['thoughtful','tense','emotional'],e:'heavy',er:'era2000s',y:2002,d:'Baltimore drug war. The greatest TV show ever made.',rt:9.3,cn:'heavy',pl:['Netflix']},
+  {t:'Past Lives',ty:'movie',g:['romance','drama'],m:['emotional','thoughtful','chill'],e:'light',er:'era2020s',y:2023,d:'Two souls across continents and decades. Beautifully quiet.',rt:7.8,cn:'none',pl:['Netflix']},
+  {t:'Soul',ty:'movie',g:['animation','comedy','drama'],m:['thoughtful','emotional','funny'],e:'light',er:'era2020s',y:2020,d:'What makes life worth living? Pixar at its most profound.',rt:8.0,cn:'none',pl:['Disney+']},
+  {t:'Coco',ty:'movie',g:['animation','fantasy','drama'],m:['emotional','funny','chill'],e:'light',er:'era2010s',y:2017,d:'A boy journeys to the Land of the Dead. Bring tissues.',rt:8.4,cn:'none',pl:['Disney+']},
+  {t:'Demon Slayer',ty:'series',g:['fantasy','action','dark','animation'],m:['pumped','emotional'],e:'medium',er:'era2020s',y:2019,d:'The most visually stunning anime ever created.',rt:8.7,cn:'moderate',pl:['Netflix']},
+  {t:'La La Land',ty:'movie',g:['romance','drama','comedy'],m:['emotional','chill','funny'],e:'light',er:'era2010s',y:2016,d:'Dreams, love, and jazz in Los Angeles.',rt:8.0,cn:'none',pl:['Netflix']},
+  {t:'Eternal Sunshine',ty:'movie',g:['romance','sci-fi','drama'],m:['emotional','thoughtful'],e:'medium',er:'era2000s',y:2004,d:'Erase your ex? The science says no. The heart says yes.',rt:8.3,cn:'moderate',pl:['Netflix']},
+  {t:'A Quiet Place',ty:'movie',g:['horror','sci-fi','drama'],m:['tense','emotional'],e:'medium',er:'era2010s',y:2018,d:'Silence is survival. Pure cinematic tension.',rt:7.5,cn:'mild',pl:['Netflix']},
+  {t:'What We Do in the Shadows',ty:'series',g:['comedy','dark'],m:['funny','chill'],e:'light',er:'era2020s',y:2019,d:'Vampire mockumentary. Ridiculously good.',rt:8.6,cn:'heavy',pl:['Hulu']},
+  {t:'Extraction',ty:'movie',g:['action','thriller'],m:['pumped','tense'],e:'heavy',er:'era2020s',y:2020,d:'Non-stop adrenaline with Chris Hemsworth.',rt:6.7,cn:'heavy',pl:['Netflix']},
+  {t:'Sherlock',ty:'series',g:['thriller','drama','crime'],m:['thoughtful','tense','pumped'],e:'medium',er:'era2010s',y:2010,d:'Modern Holmes. Brilliant, fast, addictive.',rt:9.1,cn:'moderate',pl:['Netflix']},
+  {t:'Shutter Island',ty:'movie',g:['thriller','drama','dark'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2010,d:'Is he crazy or is it real? Mind-bending to the end.',rt:8.2,cn:'heavy',pl:['Netflix']},
+  {t:'The Grand Budapest Hotel',ty:'movie',g:['comedy','drama'],m:['funny','chill','emotional'],e:'light',er:'era2010s',y:2014,d:'Wes Anderson colorful charming masterpiece.',rt:8.1,cn:'mild',pl:['Disney+']},
+  {t:'The Crown',ty:'series',g:['drama'],m:['thoughtful','chill'],e:'light',er:'era2010s',y:2016,d:'The British monarchy. Grand, elegant, addictive.',rt:8.6,cn:'mild',pl:['Netflix']},
+  {t:'Gladiator',ty:'movie',g:['action','drama'],m:['pumped','emotional'],e:'heavy',er:'pre2000',y:2000,d:'Are you not entertained? Maximus defines legacy.',rt:8.5,cn:'heavy',pl:['Netflix']},
+  {t:'Se7en',ty:'movie',g:['thriller','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'pre2000',y:1995,d:'Seven deadly sins. One box you will never forget.',rt:8.6,cn:'heavy',pl:['Netflix']},
+  {t:'Prisoners',ty:'movie',g:['thriller','drama','crime'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2013,d:'A father desperation pushed to the absolute edge.',rt:8.1,cn:'heavy',pl:['Netflix']},
+  {t:'Gone Girl',ty:'movie',g:['thriller','drama'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2014,d:'Marriage is a trap. This movie proves it.',rt:8.1,cn:'heavy',pl:['Netflix']},
+  {t:'12 Angry Men',ty:'movie',g:['drama'],m:['thoughtful','tense'],e:'medium',er:'pre2000',y:1957,d:'Twelve men. One room. Absolute perfection.',rt:9.0,cn:'none',pl:['Prime']},
+  {t:'Full Metal Alchemist',ty:'series',g:['fantasy','action','drama','animation'],m:['pumped','emotional','thoughtful'],e:'medium',er:'era2000s',y:2009,d:'Two brothers seek the Philosopher Stone. Anime perfection.',rt:9.1,cn:'moderate',pl:['Netflix']},
 ];
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // STATE
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 let cur = 0;
 const ans = {};
 let wl = JSON.parse(localStorage.getItem('rv_wl')||'[]');
@@ -360,11 +363,8 @@ let wt = JSON.parse(localStorage.getItem('rv_wt')||'[]');
 
 const $ = id=>document.getElementById(id);
 const slW=$('slW'), btn=$('btnN'), prF=$('prF'), hdSt=$('hdSt'), tst=$('tst'), hint=$('hint');
-let onHome = false;
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // RENDER QUIZ
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function render() {
   slW.innerHTML = Q.map((q,i)=>`
     <div class="slide slide-jc">
@@ -372,7 +372,7 @@ function render() {
       <div class="q-title">${q.title}</div>
       <div class="q-sub">${q.sub}</div>
       ${q.multi ? `<div class="chip-wrap"><div class="chip-grid" data-q="${q.id}">${q.opts.map(o=>`
-        <div class="chip" data-q="${q.id}" data-val="${o.i}">
+        <div class="chip" data-q="${q.id}" data-val="${o.i}" role="checkbox" aria-checked="false" tabindex="0">
           <span class="pls">${I.plus}</span><span class="chk">${I.check}</span>
           ${I[o.i]||''} ${o.l}
         </div>
@@ -394,7 +394,8 @@ function updUI() {
   hdSt.innerHTML = `<span>${Math.min(cur+1,t)}</span>/${t}`;
   if (cur < t) {
     const last = cur === t-1;
-    btn.innerHTML = last ? 'Get My Picks →' : 'Next →';
+    const arrow = I.arrow;
+    btn.innerHTML = last ? 'Get My Picks <span class="btn-arrow">'+arrow+'</span>' : 'Next <span class="btn-arrow">'+arrow+'</span>';
     btn.classList.toggle('enabled', false);
     const q = Q[cur];
     if (q.multi) {
@@ -423,11 +424,8 @@ function bindNav() {
   };
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // SELECTION
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 slW.addEventListener('click', e => {
-  if (onHome) return;
   const chip = e.target.closest('.chip');
   if (chip) {
     const qId=chip.dataset.q, val=chip.dataset.val;
@@ -435,6 +433,7 @@ slW.addEventListener('click', e => {
     ans[qId]=ans[qId]||[];
     const idx=ans[qId].indexOf(val);
     chip.classList.toggle('selected');
+    chip.setAttribute('aria-checked', idx===-1?'true':'false');
     if(idx>-1) ans[qId].splice(idx,1); else ans[qId].push(val);
     updUI(); return;
   }
@@ -449,9 +448,7 @@ slW.addEventListener('click', e => {
 });
 slW.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')){const el=e.target.closest('.opt,.opt-fw,.chip');if(el){e.preventDefault();el.click()}}});
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ENGINE
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function score(item) {
   let s=0;
   if(item.m.includes(ans.mood)) s+=35;
@@ -477,34 +474,30 @@ function recommend() {
   return top;
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // RESULTS
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function compute() {
   slW.innerHTML=`<div class="slide active slide-r"><div class="load"><div class="load-r"></div><p>Analyzing your taste...</p></div></div>`;
-  btn.classList.remove('enabled'); btn.textContent='⋯';
+  btn.classList.remove('enabled'); btn.textContent='...';
   setTimeout(()=>show(recommend()), 600);
 }
 function show(picks, ref) {
   const maxS=Math.max(...picks.map(p=>p.s),1);
   const pills=[];
-  if(ans.mood) pills.push('🎭 '+ans.mood);
-  (Array.isArray(ans.genre)?ans.genre:[ans.genre].filter(Boolean)).forEach(g=>pills.push('🏷️ '+g));
-  if(ans.energy) pills.push('⚡ '+ans.energy);
-  if(ans.era) { const m={'pre2000':'pre-2000','era2000s':'2000s','era2010s':'2010s','era2020s':'2020s','latest':'2024+','any':'Any'}; pills.push('📅 '+(m[ans.era]||ans.era)); }
-  const rankI=['⭐','🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'];
-  const rankL=['#1 Pick','#2','#3','#4','#5','#6','#7'];
-  const iM={'light':'🌿 Light','medium':'⚡ Medium','heavy':'🌋 Heavy'};
-  const cM={'none':'🌿 Clean','mild':'⚡ Mild','moderate':'⚠️ Moderate','heavy':'🔞 Heavy'};
+  if(ans.mood) pills.push(ans.mood);
+  (Array.isArray(ans.genre)?ans.genre:[ans.genre].filter(Boolean)).forEach(g=>pills.push(g));
+  if(ans.energy) pills.push(ans.energy);
+  if(ans.era) { const m={'pre2000':'pre-2000','era2000s':'2000s','era2010s':'2010s','era2020s':'2020s','latest':'2024+','any':'Any'}; pills.push(m[ans.era]||ans.era); }
   slW.innerHTML=`<div class="slide active slide-r"><div class="rv">
     <div class="rv-head"><h2>${ref?'Refreshed':'Your Picks'}</h2><div class="sub">${ref?'Different take':`Top ${picks.length} for you`}</div></div>
     ${pills.length?`<div class="taste anim-in d1">${pills.map(p=>`<span class="taste-pill">${p}</span>`).join('')}</div>`:''}
     <div class="rv-scroll">${picks.map((item,i)=>{
       const pct=Math.round((item.s/maxS)*100), k=item.t.toLowerCase().replace(/[^a-z0-9]/g,''), w=wl.includes(k);
-      return `<div class="rc anim-in d${Math.min(i+1,5)}" onclick="this.classList.toggle('expanded')" tabindex="0">
-        <div class="rank">${rankI[i]} ${rankL[i]}</div>
+      const rankIcon = i===0 ? I.star : (i<3 ? I.trophy : '');
+      const rankLabel = i===0 ? 'Top Pick' : '#'+(i+1);
+      return `<div class="rc anim-in d${Math.min(i+2,6)}" onclick="this.classList.toggle('expanded')" tabindex="0">
+        <div class="rank">${rankIcon?'<span style="margin-right:2px">'+rankIcon+'</span>':''} ${rankLabel}</div>
         <div class="title">${item.t}</div>
-        <div class="meta"><span>${item.y}</span><span class="dot"></span><span>${item.ty==='movie'?'Movie':'Series'}</span><span class="dot"></span><span>${iM[item.e]||item.e}</span><span class="match-badge">${I.check} ${pct}%</span></div>
+        <div class="meta"><span>${item.y}</span><span class="dot"></span><span>${item.ty==='movie'?'Movie':'Series'}</span><span class="dot"></span><span style="text-transform:capitalize">${item.e}</span><span class="match-badge">${I.check} ${pct}%</span></div>
         <div class="tags">${item.g.map(g=>`<span class="tag">#${g}</span>`).join('')}${item.rt?`<span class="tag">★ ${item.rt}</span>`:''}</div>
         <div class="desc">${item.d}</div>
         <div class="act">
@@ -515,20 +508,21 @@ function show(picks, ref) {
           <div class="row"><span class="lbl">Year</span><span class="val">${item.y}</span></div>
           <div class="row"><span class="lbl">Rating</span><span class="val">★ ${item.rt}/10</span></div>
           <div class="row"><span class="lbl">Type</span><span class="val">${item.ty==='movie'?'Movie':'Series'}</span></div>
-          <div class="row"><span class="lbl">Energy</span><span class="val">${iM[item.e]||item.e}</span></div>
-          <div class="row"><span class="lbl">Content</span><span class="val">${cM[item.cn]||item.cn}</span></div>
+          <div class="row"><span class="lbl">Energy</span><span class="val" style="text-transform:capitalize">${item.e}</span></div>
+          <div class="row"><span class="lbl">Content</span><span class="val" style="text-transform:capitalize">${item.cn}</span></div>
           <div class="row"><span class="lbl">Streaming</span><span class="val">${(item.pl||['Various']).join(', ')}</span></div>
         </div></div>
       </div>`;
     }).join('')}</div>
     <div class="rbar">
-      <button class="btn-ref" onclick="refine()">${I.refresh} Refresh</button>
       <button class="btn-sh" onclick="openWL()">${I.list} Watchlist</button>
       <button class="btn-sh" onclick="share()">${I.share} Share</button>
+      <button class="btn-ref" onclick="refine()">${I.refresh} Refresh</button>
       <button class="btn-r" onclick="retake()">Retake</button>
     </div>
   </div></div>`;
-  prF.style.width='100%'; hdSt.innerHTML='✨ Done';
+  prF.style.width='100%'; prF.classList.add('done');
+  hdSt.innerHTML='Done';
   btn.classList.remove('enabled'); btn.innerHTML='↻ Start Over'; btn.onclick=retake;
 }
 function refine() {
@@ -540,19 +534,17 @@ function refine() {
   },500);
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // WATCHLIST
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function tglWl(key,el) {
   const i=wl.indexOf(key);
   if(i>-1){wl.splice(i,1);if(el){el.innerHTML=`${I.bookmark} Watchlist`;el.classList.remove('saved')}showToast('Removed')}
-  else{wl.push(key);if(el){el.innerHTML=`${I.check} Saved`;el.classList.add('saved')}showToast('Added ✨')}
+  else{wl.push(key);if(el){el.innerHTML=`${I.check} Saved`;el.classList.add('saved')}showToast('Added')}
   localStorage.setItem('rv_wl',JSON.stringify(wl));
 }
 function tglWt(key,el) {
   const i=wt.indexOf(key);
   if(i>-1){wt.splice(i,1);if(el)el.innerHTML=`${I.eye} Watched`;showToast('Unmarked')}
-  else{wt.push(key);if(el)el.innerHTML=`${I.check} Seen`;showToast('Marked 👁️');const wi=wl.indexOf(key);if(wi>-1){wl.splice(wi,1);localStorage.setItem('rv_wl',JSON.stringify(wl))}}
+  else{wt.push(key);if(el)el.innerHTML=`${I.check} Seen`;showToast('Marked');const wi=wl.indexOf(key);if(wi>-1){wl.splice(wi,1);localStorage.setItem('rv_wl',JSON.stringify(wl))}}
   localStorage.setItem('rv_wt',JSON.stringify(wt));
 }
 function openWL() {
@@ -568,8 +560,8 @@ $('wlM').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTar
 function share() {
   const t=[...document.querySelectorAll('.rc .title')].map(el=>el.textContent);
   if(!t.length) return;
-  const text=`My ReelVibe picks:\n\n${t.map((t,i)=>['⭐','🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'][i]+' '+t).join('\n')}\n\nreelvibe.app`;
-  if(navigator.share){navigator.share({title:'ReelVibe',text}).catch(()=>{})}else{navigator.clipboard.writeText(text).then(()=>showToast('Copied!')).catch(()=>{})}
+  const text=`My ReelVibe picks:\n\n${t.map((t,i)=>'#'+(i+1)+' '+t).join('\n')}\n\nreelvibe.app`;
+  if(navigator.share){navigator.share({title:'ReelVibe',text}).catch(()=>{})}else{navigator.clipboard.writeText(text).then(()=>showToast('Copied')).catch(()=>{})}
 }
 function retake() {
   Object.keys(ans).forEach(k=>delete ans[k]);
@@ -580,13 +572,10 @@ function retake() {
 let tt;
 function showToast(m){tst.textContent=m;tst.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>tst.classList.remove('show'),2000)}
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// BOOT — start quiz immediately, watchlist in header
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// BOOT
 cur = 0;
 render();
 goTo(0);
-// Watchlist icon already in header (hdWlBtn)
 </script>
 </body>
 </html>
