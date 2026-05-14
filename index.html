@@ -258,6 +258,7 @@
     .btn-primary.enabled { opacity: 1; pointer-events: auto; }
     .btn-primary.enabled:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(124,58,237,0.25); }
     .btn-primary:active { transform: scale(0.97); }
+    .btn-primary svg { width: 18px; height: 18px; display: inline-block; vertical-align: middle; margin-right: 6px; }
     .btn-primary .arrow { display: inline-block; transition: transform var(--duration-fast) ease; }
     .btn-primary.enabled:hover .arrow { transform: translateX(4px); }
 
@@ -338,7 +339,7 @@
       min-height: 36px; display: flex; align-items: center; gap: var(--space-1);
     }
     .rc .act button:active { transform: scale(0.95); }
-    .rc .act button svg { width: 14px; height: 14px; }
+    .rc .act button svg { width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px; }
     .btn-wl {
       background: rgba(124,58,237,0.12); color: var(--primary-light);
       border: 1px solid rgba(124,58,237,0.15);
@@ -366,6 +367,7 @@
       cursor: pointer; transition: all var(--duration-fast) ease; min-height: 48px;
     }
     .rbar button:active { transform: scale(0.96); }
+    .rbar button svg { width: 16px; height: 16px; display: inline-block; vertical-align: middle; }
     .btn-refine { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
     .btn-retake { background: var(--gradient); color: #fff; }
     .btn-share { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
