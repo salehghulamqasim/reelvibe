@@ -6,634 +6,365 @@
   <title>ReelVibe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    /* ── Design Tokens (UI-UX Pro Max compliant) ── */
     :root {
-      --bg: #0c0c14;
-      --bg-elevated: rgba(255,255,255,0.04);
+      --bg: #08080f;
+      --bg-card: rgba(255,255,255,0.03);
       --bg-hover: rgba(255,255,255,0.06);
-      --bg-selected: rgba(124,58,237,0.12);
-      --surface: rgba(255,255,255,0.03);
-      --surface-elevated: rgba(255,255,255,0.05);
+      --bg-chip: rgba(124,58,237,0.12);
       --border: rgba(255,255,255,0.06);
       --border-hover: rgba(255,255,255,0.1);
-      --border-selected: #7c3aed;
+      --border-chip: rgba(124,58,237,0.2);
       --text: rgba(255,255,255,0.92);
-      --text-secondary: rgba(255,255,255,0.55);
-      --text-tertiary: rgba(255,255,255,0.3);
+      --text2: rgba(255,255,255,0.55);
+      --text3: rgba(255,255,255,0.3);
       --primary: #7c3aed;
-      --primary-light: #a78bfa;
+      --primary-l: #a78bfa;
       --accent: #f59e0b;
       --success: #34d399;
       --error: #ef4444;
-      --gradient: linear-gradient(135deg, #7c3aed, #a78bfa);
-      --gradient-accent: linear-gradient(135deg, #7c3aed, #ec4899);
-      --shadow: 0 8px 32px rgba(0,0,0,0.3);
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --radius-xl: 24px;
-      --space-1: 4px;
-      --space-2: 8px;
-      --space-3: 12px;
-      --space-4: 16px;
-      --space-5: 20px;
-      --space-6: 24px;
-      --space-8: 32px;
-      --space-10: 40px;
-      --space-12: 48px;
-      --font-xs: 11px;
-      --font-sm: 12px;
-      --font-md: 13px;
-      --font-base: 14px;
-      --font-lg: 16px;
-      --font-xl: 18px;
-      --font-2xl: 20px;
-      --font-3xl: 24px;
-      --font-4xl: 28px;
-      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --grad: linear-gradient(135deg, #7c3aed, #a78bfa);
+      --grad-accent: linear-gradient(135deg, #7c3aed, #ec4899);
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px;
+      --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px;
+      --f-xs: 11px; --f-sm: 12px; --f-md: 13px; --f-base: 14px;
+      --f-lg: 16px; --f-xl: 18px; --f-2xl: 20px; --f-3xl: 24px; --f-4xl: 28px;
+      --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 24px;
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-in: cubic-bezier(0.4, 0, 1, 1);
-      --duration-fast: 150ms;
-      --duration-normal: 250ms;
-      --duration-slow: 400ms;
     }
-
-    /* ── Reset ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%; overflow: hidden;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+    @media (prefers-reduced-motion: reduce) { *,::before,::after { animation-duration:0.01ms!important; transition-duration:0.01ms!important; } }
+    *,::before,::after { box-sizing:border-box; margin:0; padding:0; }
+    html,body {
+      height:100%; overflow:hidden;
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+      background:var(--bg); color:var(--text);
+      -webkit-font-smoothing:antialiased;
     }
-
-    /* ── Reduced Motion ── */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
+    .bg-amb {
+      position:fixed; inset:0; z-index:0;
+      background: radial-gradient(ellipse 70% 50% at 15% 25%, rgba(124,58,237,0.08) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 85% 75%, rgba(167,139,250,0.06) 0%, transparent 60%), radial-gradient(ellipse 40% 35% at 50% 50%, rgba(236,72,153,0.04) 0%, transparent 50%);
+      animation: amb 25s ease-in-out infinite alternate;
     }
-
-    /* ── Animated BG ── */
-    .bg-ambient {
-      position: fixed; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 15% 25%, rgba(124,58,237,0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 85% 75%, rgba(167,139,250,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 35% at 50% 50%, rgba(236,72,153,0.04) 0%, transparent 50%);
-      animation: ambientShift 25s ease-in-out infinite alternate;
-    }
-    @keyframes ambientShift {
-      0% { transform: scale(1) rotate(0deg); opacity: 1; }
-      100% { transform: scale(1.08) rotate(2deg); opacity: 0.8; }
-    }
-    /* Noise texture overlay */
-    .bg-ambient::after {
-      content: ''; position: fixed; inset: 0;
-      opacity: 0.025;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      pointer-events: none;
-    }
-
-    /* ── App Shell ── */
-    #app {
-      position: relative; z-index: 1;
-      height: 100dvh; max-width: 480px; margin: 0 auto;
-      display: flex; flex-direction: column;
-      padding: 0 var(--space-5);
-    }
-
-    /* ── Header ── */
-    .hd {
-      padding: var(--space-12) 0 var(--space-2); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .hd-brand {
-      display: flex; align-items: center; gap: var(--space-3);
-      font-size: var(--font-xl); font-weight: 800; letter-spacing: -0.3px;
-    }
-    .hd-brand svg { width: 28px; height: 28px; }
-    .hd-step {
-      font-size: var(--font-md); font-weight: 500;
-      color: var(--text-tertiary); letter-spacing: 0.3px;
-    }
-    .hd-step span { color: var(--primary-light); }
-
-    /* ── Progress ── */
-    .pr {
-      padding: 0 0 var(--space-6); flex-shrink: 0;
-    }
-    .pr-track {
-      height: 4px; background: var(--bg-elevated);
-      border-radius: 4px; overflow: hidden; position: relative;
-    }
-    .pr-fill {
-      height: 100%; border-radius: 4px; width: 0%;
-      background: var(--gradient);
-      transition: width 0.6s var(--ease-spring);
-      position: relative;
-    }
-    .pr-fill::after {
-      content: ''; position: absolute; right: -3px; top: -2px;
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--primary); opacity: 0.5; filter: blur(4px);
-    }
-
-    /* ── Slides Container ── */
-    .sl {
-      flex: 1; position: relative; overflow: hidden;
-      margin: 0 calc(-1 * var(--space-2)); padding: 0 var(--space-2);
-    }
-    .slide {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column; justify-content: center;
-      opacity: 0; transform: translateY(20px) scale(0.97);
-      transition: opacity 0.45s var(--ease-out), transform 0.5s var(--ease-spring);
-      pointer-events: none;
-    }
-    .slide.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-    .slide.dismiss { opacity: 0; transform: translateY(-16px) scale(0.95); }
-    .slide-r { justify-content: flex-start; }
-
-    /* ── Question ── */
-    .q-num {
-      font-size: var(--font-sm); font-weight: 600;
-      color: var(--primary-light); letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: var(--space-1);
-    }
-    .q-title {
-      font-size: var(--font-4xl); font-weight: 800;
-      line-height: 1.1; letter-spacing: -0.5px;
-      margin-bottom: var(--space-1);
-    }
-    .q-sub {
-      font-size: var(--font-base); color: var(--text-secondary);
-      margin-bottom: var(--space-8); font-weight: 400;
-    }
-
-    /* ── Options Grid ── */
-    .opts {
-      display: grid; gap: var(--space-3);
-    }
-    .opts-2 { grid-template-columns: 1fr 1fr; }
-    .opts-3 { grid-template-columns: 1fr 1fr 1fr; }
-    .opts-4 { grid-template-columns: 1fr 1fr; }
-
-    /* ── Option Card ── */
-    .opt {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: var(--space-5) var(--space-3);
-      text-align: center; cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-spring);
-      display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
-      position: relative; overflow: hidden;
-      min-height: 80px;
-      -webkit-tap-highlight-color: transparent;
-      outline: none;
-    }
-    .opt:focus-visible { box-shadow: 0 0 0 2px var(--primary); }
-    .opt:hover { background: var(--bg-hover); border-color: var(--border-hover); }
-    .opt:active { transform: scale(0.96); }
-    .opt svg { width: 28px; height: 28px; color: var(--text-secondary); transition: color var(--duration-normal) ease; }
-    .opt .lbl {
-      font-size: var(--font-md); font-weight: 500;
-      color: var(--text-secondary); line-height: 1.2;
-      transition: color var(--duration-normal) ease;
-    }
-    .opt.selected {
-      border-color: var(--border-selected);
-      background: var(--bg-selected);
-      box-shadow: 0 0 30px rgba(124,58,237,0.08);
-    }
-    .opt.selected svg { color: var(--primary-light); }
-    .opt.selected .lbl { color: var(--text); }
-    .opt.selected::after {
-      content: ''; position: absolute; top: -1px; left: 25%; right: 25%;
-      height: 2px; background: var(--gradient); border-radius: 2px;
-    }
-
-    /* ── Full-width Option ── */
-    .opt-fw {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: var(--space-5);
-      text-align: center; cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-spring);
-      display: flex; align-items: center; justify-content: center; gap: var(--space-3);
-      min-height: 56px;
-      -webkit-tap-highlight-color: transparent;
-      outline: none;
-    }
-    .opt-fw:focus-visible { box-shadow: 0 0 0 2px var(--primary); }
-    .opt-fw:hover { background: var(--bg-hover); border-color: var(--border-hover); }
-    .opt-fw:active { transform: scale(0.97); }
-    .opt-fw svg { width: 24px; height: 24px; color: var(--text-secondary); }
-    .opt-fw .lbl { font-size: var(--font-lg); font-weight: 500; color: var(--text-secondary); }
-    .opt-fw.selected {
-      border-color: var(--border-selected);
-      background: var(--bg-selected);
-      box-shadow: 0 0 30px rgba(124,58,237,0.08);
-    }
-    .opt-fw.selected svg { color: var(--primary-light); }
-    .opt-fw.selected .lbl { color: var(--text); }
-
-    /* ── Next Button ── */
-    .nv { padding: var(--space-4) 0 var(--space-8); flex-shrink: 0; }
-    .btn-primary {
-      width: 100%; padding: var(--space-5);
-      border: none; border-radius: var(--radius-md);
-      font-size: var(--font-lg); font-weight: 600; font-family: inherit;
-      background: var(--gradient);
-      color: #fff; cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-spring);
-      opacity: 0.2; pointer-events: none;
-      position: relative; overflow: hidden;
-      letter-spacing: -0.1px;
-    }
-    .btn-primary.enabled { opacity: 1; pointer-events: auto; }
-    .btn-primary.enabled:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(124,58,237,0.25); }
-    .btn-primary:active { transform: scale(0.97); }
-    .btn-primary svg { width: 18px; height: 18px; display: inline-block; vertical-align: middle; margin-right: 6px; }
-    .btn-primary .arrow { display: inline-block; transition: transform var(--duration-fast) ease; }
-    .btn-primary.enabled:hover .arrow { transform: translateX(4px); }
-
-    /* ── Skip Hint ── */
-    .hint {
-      text-align: center; margin-top: var(--space-2);
-      font-size: var(--font-sm); color: var(--text-tertiary);
-      font-weight: 400;
-    }
-
-    /* ── RESULTS ── */
-    .rv { flex: 1; display: flex; flex-direction: column; padding-top: var(--space-1); min-height: 0; }
-    .rv-head { display: flex; align-items: flex-start; gap: var(--space-3); margin-bottom: var(--space-5); flex-shrink: 0; flex-direction: column; }
-    .rv-head h2 { font-size: var(--font-3xl); font-weight: 800; letter-spacing: -0.3px; }
-    .rv-head .sub { font-size: var(--font-base); color: var(--text-secondary); }
-    .rv-scroll {
-      flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-      padding: 0 var(--space-1) var(--space-3); min-height: 0;
-    }
-    .rv-scroll::-webkit-scrollbar { width: 3px; }
-    .rv-scroll::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 3px; }
-
-    /* ── Result Card ── */
-    .rc {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: var(--space-5);
-      margin-bottom: var(--space-3);
-      position: relative; overflow: hidden;
-      cursor: pointer; transition: all var(--duration-fast) ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .rc:active { transform: scale(0.98); }
-    .rc::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 3px; background: var(--gradient-accent); opacity: 0.5;
-    }
-    .rc .rank {
-      font-size: var(--font-sm); font-weight: 600;
-      color: var(--primary-light); text-transform: uppercase;
-      letter-spacing: 1px; margin-bottom: var(--space-1);
-    }
-    .rc .title {
-      font-size: var(--font-2xl); font-weight: 700;
-      letter-spacing: -0.2px; margin-bottom: var(--space-1);
-    }
-    .rc .meta {
-      display: flex; align-items: center; gap: var(--space-2);
-      font-size: var(--font-md); color: var(--text-secondary);
-      margin-bottom: var(--space-3); flex-wrap: wrap;
-    }
-    .rc .meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-tertiary); flex-shrink: 0; }
-    .rc .match-badge {
-      display: inline-flex; align-items: center; gap: 3px;
-      font-size: var(--font-xs); font-weight: 600; color: var(--success);
-      background: rgba(52,211,153,0.08); padding: 2px var(--space-2);
-      border-radius: 20px; border: 1px solid rgba(52,211,153,0.12);
-    }
-    .rc .tags {
-      display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-3);
-    }
-    .rc .tag {
-      font-size: var(--font-xs); font-weight: 500;
-      padding: 3px var(--space-2); border-radius: 20px;
-      background: var(--bg-elevated); border: 1px solid var(--border);
-      color: var(--text-secondary);
-    }
-    .rc .desc {
-      font-size: var(--font-base); color: var(--text-secondary);
-      line-height: 1.5; margin-bottom: var(--space-3);
-    }
-    .rc .act {
-      display: flex; gap: var(--space-2);
-    }
-    .rc .act button {
-      padding: var(--space-2) var(--space-4); border: none; border-radius: var(--radius-sm);
-      font-size: var(--font-sm); font-weight: 600; font-family: inherit;
-      cursor: pointer; transition: all var(--duration-fast) ease;
-      min-height: 36px; display: flex; align-items: center; gap: var(--space-1);
-    }
-    .rc .act button:active { transform: scale(0.95); }
-    .rc .act button svg { width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px; }
-    .btn-wl {
-      background: rgba(124,58,237,0.12); color: var(--primary-light);
-      border: 1px solid rgba(124,58,237,0.15);
-    }
-    .btn-wl.saved { background: rgba(52,211,153,0.12); color: var(--success); border-color: rgba(52,211,153,0.15); }
-    .btn-watched {
-      background: var(--bg-elevated); color: var(--text-secondary);
-      border: 1px solid var(--border);
-    }
-    .btn-watched.seen { background: rgba(245,158,11,0.12); color: var(--accent); }
-
-    /* ── Expandable ── */
-    .rc .expand { max-height: 0; overflow: hidden; transition: max-height 0.35s var(--ease-spring); }
-    .rc.expanded .expand { max-height: 200px; }
-    .exp-inner { padding-top: var(--space-3); border-top: 1px solid var(--border); margin-top: var(--space-4); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
-    .exp-inner .row { display: flex; flex-direction: column; gap: 2px; }
-    .exp-inner .row .lbl { font-size: var(--font-xs); color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
-    .exp-inner .row .val { font-size: var(--font-base); color: var(--text-secondary); font-weight: 500; }
-
-    /* ── Results Bar ── */
-    .rbar { display: flex; gap: var(--space-2); flex-shrink: 0; padding: var(--space-2) 0 var(--space-5); }
-    .rbar button {
-      flex: 1; padding: var(--space-3) var(--space-4); border: none; border-radius: var(--radius-md);
-      font-size: var(--font-md); font-weight: 600; font-family: inherit;
-      cursor: pointer; transition: all var(--duration-fast) ease; min-height: 48px;
-    }
-    .rbar button:active { transform: scale(0.96); }
-    .rbar button svg { width: 16px; height: 16px; display: inline-block; vertical-align: middle; }
-    .btn-refine { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
-    .btn-retake { background: var(--gradient); color: #fff; }
-    .btn-share { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
-
-    /* ── Loading Screen ── */
-    .load {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: var(--space-5);
-      height: 100%;
-    }
-    .load-ring { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .load p { font-size: var(--font-base); color: var(--text-tertiary); }
-
-    /* ── Toast ── */
-    .toast {
-      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: rgba(255,255,255,0.07); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border); border-radius: var(--radius-md);
-      padding: var(--space-3) var(--space-6); font-size: var(--font-base);
-      font-weight: 500; color: var(--text);
-      opacity: 0; transition: all var(--duration-slow) var(--ease-spring);
-      z-index: 100; pointer-events: none;
-      white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* ── Watchlist Modal ── */
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 50;
-      background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      display: flex; align-items: flex-end;
-      opacity: 0; pointer-events: none;
-      transition: opacity var(--duration-normal) ease;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: auto; }
-    .modal {
-      width: 100%; max-width: 480px; margin: 0 auto;
-      background: #11111d; border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-      padding: var(--space-5) var(--space-5) var(--space-10);
-      max-height: 70vh; overflow-y: auto;
-      transform: translateY(100%); border-top: 1px solid var(--border);
-      transition: transform var(--duration-slow) var(--ease-spring);
-    }
-    .modal-overlay.open .modal { transform: translateY(0); }
-    .modal-handle { width: 36px; height: 4px; background: var(--text-tertiary); border-radius: 4px; margin: 0 auto var(--space-4); opacity: 0.3; }
-    .modal h3 { font-size: var(--font-2xl); font-weight: 700; margin-bottom: var(--space-1); }
-    .modal .sub { font-size: var(--font-md); color: var(--text-secondary); margin-bottom: var(--space-5); }
-    .modal-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-4); background: var(--surface);
-      border-radius: var(--radius-md); margin-bottom: var(--space-2);
-      border: 1px solid var(--border);
-    }
-    .modal-item .mi-title { font-weight: 600; font-size: var(--font-lg); }
-    .modal-item .mi-meta { font-size: var(--font-sm); color: var(--text-secondary); }
-    .modal-item button {
-      background: rgba(239,68,68,0.1); border: none; color: var(--error);
-      padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm);
-      font-size: var(--font-sm); font-weight: 600; cursor: pointer; font-family: inherit;
-      min-height: 36px;
-    }
-    .empty-wl { text-align: center; padding: var(--space-10) 0; color: var(--text-tertiary); font-size: var(--font-base); }
-    .empty-wl svg { width: 40px; height: 40px; margin-bottom: var(--space-3); opacity: 0.3; }
-
-    /* ── Animations ── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .anim-in { animation: fadeUp 0.45s var(--ease-out) forwards; opacity: 0; }
-    .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.18s; } .d3 { animation-delay: 0.26s; } .d4 { animation-delay: 0.34s; }
-
-    /* ── Responsive ── */
-    @media (max-width: 380px) {
-      #app { padding: 0 var(--space-4); }
-      .q-title { font-size: var(--font-3xl); }
-      .opt svg { width: 24px; height: 24px; }
-      .opt .lbl { font-size: var(--font-sm); }
-      .opt { padding: var(--space-4) var(--space-2); min-height: 72px; }
-      .hd { padding-top: var(--space-10); }
-    }
-    @media (min-width: 481px) {
-      #app { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
-    }
+    @keyframes amb { 0%{transform:scale(1)} 100%{transform:scale(1.08)rotate(2deg)} }
+    .bg-amb::after { content:''; position:fixed; inset:0; opacity:0.02; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); pointer-events:none; }
+    #app { position:relative; z-index:1; height:100dvh; max-width:480px; margin:0 auto; display:flex; flex-direction:column; padding:0 var(--s5); }
+    .hd { padding: var(--s10) 0 var(--s2); flex-shrink:0; display:flex; align-items:center; justify-content:space-between; }
+    .hd-brand { display:flex; align-items:center; gap:var(--s3); font-size:var(--f-xl); font-weight:800; letter-spacing:-0.3px; }
+    .hd-brand svg { width:28px; height:28px; }
+    .hd-step { font-size:var(--f-md); font-weight:500; color:var(--text3); letter-spacing:0.3px; }
+    .hd-step span { color:var(--primary-l); }
+    .pr { padding:0 0 var(--s6); flex-shrink:0; }
+    .pr-track { height:4px; background:var(--bg-card); border-radius:4px; overflow:hidden; }
+    .pr-fill { height:100%; border-radius:4px; width:0%; background:var(--grad); transition:width 0.6s var(--spring); position:relative; }
+    .pr-fill::after { content:''; position:absolute; right:-3px; top:-2px; width:8px; height:8px; border-radius:50%; background:var(--primary); opacity:0.5; filter:blur(4px); }
+    .sl { flex:1; position:relative; overflow:hidden; margin:0 calc(-1*var(--s2)); padding:0 var(--s2); }
+    .slide { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; opacity:0; transform:translateY(20px) scale(0.97); transition:opacity 0.45s var(--ease-out), transform 0.5s var(--spring); pointer-events:none; }
+    .slide.active { opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+    .slide.dismiss { opacity:0; transform:translateY(-16px) scale(0.95); }
+    .slide-r { justify-content:flex-start; }
+    .q-num { font-size:var(--f-sm); font-weight:600; color:var(--primary-l); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:var(--s1); }
+    .q-title { font-size:var(--f-4xl); font-weight:800; line-height:1.1; letter-spacing:-0.5px; margin-bottom:var(--s1); }
+    .q-sub { font-size:var(--f-base); color:var(--text2); margin-bottom:var(--s6); font-weight:400; }
+    .q-sub a { color:var(--primary-l); cursor:pointer; text-decoration:underline; }
+    /* Options */
+    .opts { display:grid; gap:var(--s3); }
+    .opts-2 { grid-template-columns:1fr 1fr; }
+    .opts-3 { grid-template-columns:1fr 1fr 1fr; }
+    .opts-4 { grid-template-columns:1fr 1fr; }
+    .opt { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-md); padding:var(--s5) var(--s3); text-align:center; cursor:pointer; transition:all 0.25s var(--spring); display:flex; flex-direction:column; align-items:center; gap:var(--s2); position:relative; overflow:hidden; min-height:80px; -webkit-tap-highlight-color:transparent; outline:none; }
+    .opt:focus-visible { box-shadow:0 0 0 2px var(--primary); }
+    .opt:hover { background:var(--bg-hover); border-color:var(--border-hover); }
+    .opt:active { transform:scale(0.96); }
+    .opt svg { width:28px; height:28px; color:var(--text2); transition:color 0.25s ease; }
+    .opt .lbl { font-size:var(--f-md); font-weight:500; color:var(--text2); line-height:1.2; }
+    .opt.selected { border-color:var(--border-chip); background:var(--bg-chip); box-shadow:0 0 30px rgba(124,58,237,0.08); }
+    .opt.selected svg { color:var(--primary-l); }
+    .opt.selected .lbl { color:var(--text); }
+    .opt.selected::after { content:''; position:absolute; top:-1px; left:25%; right:25%; height:2px; background:var(--grad); border-radius:2px; }
+    /* Multi-select chip */
+    .chip-grid { display:flex; flex-wrap:wrap; gap:var(--s2); justify-content:center; }
+    .chip { display:inline-flex; align-items:center; gap:var(--s1); padding:var(--s2) var(--s4); border-radius:100px; background:var(--bg-card); border:1px solid var(--border); cursor:pointer; transition:all 0.2s var(--spring); font-size:var(--f-md); font-weight:500; color:var(--text2); -webkit-tap-highlight-color:transparent; }
+    .chip:active { transform:scale(0.94); }
+    .chip svg { width:16px; height:16px; color:var(--text3); }
+    .chip.selected { background:var(--bg-chip); border-color:var(--border-chip); color:var(--primary-l); }
+    .chip.selected svg { color:var(--primary-l); }
+    .chip .check { display:none; }
+    .chip.selected .check { display:inline; }
+    .chip.selected .plus { display:none; }
+    /* Full width opt */
+    .opt-fw { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-md); padding:var(--s5); text-align:center; cursor:pointer; transition:all 0.25s var(--spring); display:flex; align-items:center; justify-content:center; gap:var(--s3); min-height:56px; -webkit-tap-highlight-color:transparent; }
+    .opt-fw:focus-visible { box-shadow:0 0 0 2px var(--primary); }
+    .opt-fw:hover { background:var(--bg-hover); border-color:var(--border-hover); }
+    .opt-fw:active { transform:scale(0.97); }
+    .opt-fw svg { width:24px; height:24px; color:var(--text2); }
+    .opt-fw .lbl { font-size:var(--f-lg); font-weight:500; color:var(--text2); }
+    .opt-fw.selected { border-color:var(--border-chip); background:var(--bg-chip); box-shadow:0 0 30px rgba(124,58,237,0.08); }
+    .opt-fw.selected svg { color:var(--primary-l); }
+    .opt-fw.selected .lbl { color:var(--text); }
+    .nv { padding:var(--s4) 0 var(--s8); flex-shrink:0; }
+    .btn-pri { width:100%; padding:var(--s5); border:none; border-radius:var(--r-md); font-size:var(--f-lg); font-weight:600; font-family:inherit; background:var(--grad); color:#fff; cursor:pointer; transition:all 0.25s var(--spring); opacity:0.2; pointer-events:none; }
+    .btn-pri.enabled { opacity:1; pointer-events:auto; }
+    .btn-pri.enabled:hover { transform:translateY(-1px); box-shadow:0 12px 32px rgba(124,58,237,0.25); }
+    .btn-pri:active { transform:scale(0.97); }
+    .btn-pri svg { width:18px; height:18px; display:inline-block; vertical-align:middle; margin-right:6px; }
+    .hint { text-align:center; margin-top:var(--s2); font-size:var(--f-sm); color:var(--text3); }
+    /* Results */
+    .rv { flex:1; display:flex; flex-direction:column; padding-top:var(--s1); min-height:0; }
+    .rv-head { display:flex; align-items:flex-start; gap:var(--s2); margin-bottom:var(--s4); flex-shrink:0; flex-direction:column; }
+    .rv-head h2 { font-size:var(--f-3xl); font-weight:800; letter-spacing:-0.3px; }
+    .rv-head .sub { font-size:var(--f-base); color:var(--text2); }
+    .rv-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:0 var(--s1) var(--s3); min-height:0; }
+    .rv-scroll::-webkit-scrollbar { width:3px; }
+    .rv-scroll::-webkit-scrollbar-thumb { background:var(--bg-hover); border-radius:3px; }
+    /* Taste Profile */
+    .taste { display:flex; flex-wrap:wrap; gap:var(--s1); padding:var(--s3) var(--s4); background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:var(--s4); }
+    .taste-pill { font-size:var(--f-xs); font-weight:500; padding:3px var(--s2); border-radius:100px; background:var(--bg-chip); color:var(--primary-l); border:1px solid var(--border-chip); }
+    /* Card */
+    .rc { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-lg); padding:var(--s5); margin-bottom:var(--s3); position:relative; overflow:hidden; cursor:pointer; transition:all 0.15s ease; -webkit-tap-highlight-color:transparent; }
+    .rc:active { transform:scale(0.98); }
+    .rc::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--grad-accent); opacity:0.5; }
+    .rc .rank { display:flex; align-items:center; gap:var(--s1); font-size:var(--f-sm); font-weight:600; color:var(--primary-l); text-transform:uppercase; letter-spacing:1px; margin-bottom:var(--s1); }
+    .rc .rank .star { color:var(--accent); font-size:var(--f-lg); }
+    .rc .title { font-size:var(--f-2xl); font-weight:700; letter-spacing:-0.2px; margin-bottom:var(--s1); }
+    .rc .meta { display:flex; align-items:center; gap:var(--s2); font-size:var(--f-md); color:var(--text2); margin-bottom:var(--s3); flex-wrap:wrap; }
+    .rc .meta .dot { width:3px; height:3px; border-radius:50%; background:var(--text3); flex-shrink:0; }
+    .rc .match-badge { display:inline-flex; align-items:center; gap:3px; font-size:var(--f-xs); font-weight:600; color:var(--success); background:rgba(52,211,153,0.08); padding:2px var(--s2); border-radius:20px; border:1px solid rgba(52,211,153,0.12); }
+    .rc .match-badge svg { width:12px; height:12px; }
+    .rc .tags { display:flex; flex-wrap:wrap; gap:var(--s1); margin-bottom:var(--s3); }
+    .rc .tag { font-size:var(--f-xs); font-weight:500; padding:3px var(--s2); border-radius:20px; background:var(--bg-card); border:1px solid var(--border); color:var(--text2); }
+    .rc .desc { font-size:var(--f-base); color:var(--text2); line-height:1.5; margin-bottom:var(--s2); }
+    .rc .act { display:flex; gap:var(--s2); }
+    .rc .act button { padding:var(--s2) var(--s4); border:none; border-radius:var(--r-sm); font-size:var(--f-sm); font-weight:600; font-family:inherit; cursor:pointer; transition:all 0.15s ease; min-height:36px; display:flex; align-items:center; gap:var(--s1); }
+    .rc .act button:active { transform:scale(0.95); }
+    .rc .act button svg { width:14px; height:14px; display:inline-block; vertical-align:middle; margin-right:4px; }
+    .btn-wl { background:rgba(124,58,237,0.12); color:var(--primary-l); border:1px solid rgba(124,58,237,0.15); }
+    .btn-wl.saved { background:rgba(52,211,153,0.12); color:var(--success); border-color:rgba(52,211,153,0.15); }
+    .btn-wt { background:var(--bg-card); color:var(--text2); border:1px solid var(--border); }
+    .btn-wt.seen { background:rgba(245,158,11,0.12); color:var(--accent); }
+    .rc .exp { max-height:0; overflow:hidden; transition:max-height 0.35s var(--spring); }
+    .rc.expanded .exp { max-height:200px; }
+    .exp-in { padding-top:var(--s3); border-top:1px solid var(--border); margin-top:var(--s4); display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); }
+    .exp-in .row { display:flex; flex-direction:column; gap:2px; }
+    .exp-in .row .lbl { font-size:var(--f-xs); color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; }
+    .exp-in .row .val { font-size:var(--f-base); color:var(--text2); font-weight:500; }
+    .rbar { display:flex; gap:var(--s2); flex-shrink:0; padding:var(--s2) 0 var(--s5); }
+    .rbar button { flex:1; padding:var(--s3) var(--s4); border:none; border-radius:var(--r-md); font-size:var(--f-md); font-weight:600; font-family:inherit; cursor:pointer; transition:all 0.15s ease; min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+    .rbar button:active { transform:scale(0.96); }
+    .rbar button svg { width:16px; height:16px; display:inline-block; vertical-align:middle; }
+    .btn-ref { background:var(--bg-card); color:var(--text2); border:1px solid var(--border); }
+    .btn-r { background:var(--grad); color:#fff; }
+    .btn-sh { background:var(--bg-card); color:var(--text); border:1px solid var(--border); }
+    .load { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s5); height:100%; }
+    .load-r { width:40px; height:40px; border:3px solid var(--border); border-top-color:var(--primary); border-radius:50%; animation:spin 0.7s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .load p { font-size:var(--f-base); color:var(--text3); }
+    .toast { position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(80px); background:rgba(255,255,255,0.07); backdrop-filter:blur(20px); border:1px solid var(--border); border-radius:var(--r-md); padding:var(--s3) var(--s6); font-size:var(--f-base); font-weight:500; color:var(--text); opacity:0; transition:all 0.4s var(--spring); z-index:100; pointer-events:none; white-space:nowrap; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .mo { position:fixed; inset:0; z-index:50; background:rgba(0,0,0,0.6); backdrop-filter:blur(12px); display:flex; align-items:flex-end; opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
+    .mo.open { opacity:1; pointer-events:auto; }
+    .modal { width:100%; max-width:480px; margin:0 auto; background:#11111d; border-radius:var(--r-xl) var(--r-xl) 0 0; padding:var(--s5) var(--s5) var(--s10); max-height:70vh; overflow-y:auto; transform:translateY(100%); border-top:1px solid var(--border); transition:transform 0.4s var(--spring); }
+    .mo.open .modal { transform:translateY(0); }
+    .mh { width:36px; height:4px; background:var(--text3); border-radius:4px; margin:0 auto var(--s4); opacity:0.3; }
+    .modal h3 { font-size:var(--f-2xl); font-weight:700; margin-bottom:var(--s1); }
+    .modal .sub { font-size:var(--f-md); color:var(--text2); margin-bottom:var(--s5); }
+    .mi { display:flex; align-items:center; justify-content:space-between; padding:var(--s4); background:var(--bg-card); border-radius:var(--r-md); margin-bottom:var(--s2); border:1px solid var(--border); }
+    .mi .t { font-weight:600; font-size:var(--f-lg); }
+    .mi .m { font-size:var(--f-sm); color:var(--text2); }
+    .mi button { background:rgba(239,68,68,0.1); border:none; color:var(--error); padding:var(--s2) var(--s4); border-radius:var(--r-sm); font-size:var(--f-sm); font-weight:600; cursor:pointer; font-family:inherit; min-height:36px; }
+    .empty { text-align:center; padding:var(--s10) 0; color:var(--text3); font-size:var(--f-base); }
+    .empty svg { width:40px; height:40px; margin-bottom:var(--s3); opacity:0.3; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .anim-in { animation:fadeUp 0.45s var(--ease-out) forwards; opacity:0; }
+    .d1 { animation-delay:0.1s; } .d2 { animation-delay:0.18s; } .d3 { animation-delay:0.26s; } .d4 { animation-delay:0.34s; } .d5 { animation-delay:0.42s; }
+    @media(max-width:380px){ #app{padding:0 var(--s4)} .q-title{font-size:var(--f-3xl)} .opt svg{width:24px;height:24px} .opt .lbl{font-size:var(--f-sm)} .opt{padding:var(--s4) var(--s2);min-height:72px} .hd{padding-top:var(--s10)} }
+    @media(min-width:481px){ #app{border-left:1px solid var(--border);border-right:1px solid var(--border)} }
   </style>
 </head>
 <body>
-<div class="bg-ambient"></div>
-
+<div class="bg-amb"></div>
 <div id="app">
   <div class="hd">
     <div class="hd-brand">
-      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="4"/>
-        <path d="M16 14l-6 4V10l6 4z"/>
-        <path d="M22 10l4-2v12l-4-2"/>
-      </svg>
+      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M16 14l-6 4V10l6 4z"/><path d="M22 10l4-2v12l-4-2"/></svg>
       ReelVibe
     </div>
-    <div class="hd-step" id="hdStep"><span>1</span>/6</div>
+    <div class="hd-step" id="hdSt"><span>1</span>/5</div>
   </div>
-
-  <div class="pr">
-    <div class="pr-track"><div class="pr-fill" id="prFill"></div></div>
-  </div>
-
-  <div class="sl" id="slWrap"></div>
-
+  <div class="pr"><div class="pr-track"><div class="pr-fill" id="prF"></div></div></div>
+  <div class="sl" id="slW"></div>
   <div class="nv">
-    <button class="btn-primary" id="btnNext">Next <span class="arrow">→</span></button>
+    <button class="btn-pri" id="btnN">Next <span class="arrow">→</span></button>
     <div class="hint" id="hint">Tap an option to continue</div>
   </div>
 </div>
-
-<div class="toast" id="toastMsg"></div>
-
-<div class="modal-overlay" id="wlOverlay">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <h3>Watchlist</h3>
-    <div class="sub" id="wlCount">0 saved</div>
-    <div id="wlList"></div>
-  </div>
-</div>
+<div class="toast" id="tst"></div>
+<div class="mo" id="wlM"><div class="modal" onclick="event.stopPropagation()"><div class="mh"></div><h3>Watchlist</h3><div class="sub" id="wlC">0 saved</div><div id="wlL"></div></div></div>
 
 <script>
-// ━━━━━━━━ SVG ICONS ━━━━━━━━━
-// (UI-UX Pro Max: SVG icons instead of emojis)
-const icons = {
-  // Moods
-  pumped: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>',
-  thoughtful: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1010 10M12 2a10 10 0 0110 10M2 12h20"/><path d="M9 10h.01M15 10h.01M9.05 15.5A5.5 5.5 0 0015 15"/></svg>',
-  funny: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
-  tense: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>',
-  emotional: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
-  chill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 006 6 6 6 0 01-6 6 6 6 0 016 6 6 6 0 01-6-6 6 6 0 01-6-6 6 6 0 016-6z"/></svg>',
+// ━━━━━━━━ ICONS ━━━━━━━━
+const I = {
+  pumped:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>',
+  thoughtful:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 10h.01M15 10h.01M9.05 15.5A5.5 5.5 0 0015 15"/></svg>',
+  funny:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
+  tense:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>',
+  emotional:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
+  chill:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 006 6 6 6 0 01-6 6 6 6 0 016 6 6 6 0 01-6-6 6 6 0 01-6-6 6 6 0 016-6z"/></svg>',
   // Genres
-  'sci-fi': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>',
-  action: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>',
-  comedy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
-  thriller: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>',
-  horror: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 10a3 3 0 016 0"/><path d="M12 16.5a3 3 0 002.5-1.5"/><path d="M9.5 14.5c.8.5 1.8.5 2.5 0"/></svg>',
-  romance: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
-  fantasy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
-  dark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>',
-  drama: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+  'sci-fi':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>',
+  action:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>',
+  comedy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
+  thriller:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>',
+  horror:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 10a3 3 0 016 0"/><path d="M12 16.5a3 3 0 002.5-1.5"/><path d="M9.5 14.5c.8.5 1.8.5 2.5 0"/></svg>',
+  romance:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
+  fantasy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+  dark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>',
+  drama:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+  crime:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+  animation:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 6V4"/><circle cx="9" cy="11" r="1.5"/><circle cx="15" cy="11" r="1.5"/><path d="M10 15a3 3 0 014 0"/></svg>',
   // Types
-  movie: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5"/></svg>',
-  series: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>',
-  either: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-  // Time
-  quick: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-  standard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><path d="M7 2v20M17 2v20M2 12h20"/></svg>',
-  binge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>',
-  epic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+  movie:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5"/></svg>',
+  series:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>',
+  either:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  // Energy
+  light:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="5"/></svg>',
+  medium:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+  heavy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/><path d="M15 12l-3 3"/><path d="M9 12l3 3"/></svg>',
   // Era
-  classic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 10l4 2-4 2V10z"/></svg>',
-  '2000s': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>',
-  recent: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
-  any: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>',
-  // Intensity
-  light: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="5"/></svg>',
-  medium: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
-  heavy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/><path d="M15 12l-3 3"/><path d="M9 12l3 3"/></svg>',
+  pre2000:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 10l4 2-4 2V10z"/></svg>',
+  era2000s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>',
+  era2010s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+  era2020s:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>',
+  latest:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
+  any:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>',
+  // Content
+  content_none:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  content_mild:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+  content_mod:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>',
+  content_heavy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+  content_dc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>',
   // Misc
-  bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>',
-  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
-  refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>',
-  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
-  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
-  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>',
-  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  bookmark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+  refresh:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+  list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
 };
 
 // ━━━━━━━━ QUESTIONS ━━━━━━━━
+// 1. Format → 2. Mood → 3. Genre (multi) → 4. Energy → 5. Era → 6. Maturity (optional)
 const Q = [
-  { id:'mood', num:'01', title:"What's your vibe?", sub:"Set the energy, we'll match it", cols:3, opts:[
+  { id:'type', num:'01', title:'Movie or series?', sub:'Choose your commitment level', cols:3, opts:[
+    {i:'movie',l:'Movie'},{i:'series',l:'Series'},{i:'either',l:'No preference'}
+  ]},
+  { id:'mood', num:'02', title:"What's your vibe?", sub:"Set the energy, we'll match it", cols:3, opts:[
     {i:'pumped',l:'Pumped'},{i:'thoughtful',l:'Thoughtful'},{i:'funny',l:'Funny'},
     {i:'tense',l:'Tense'},{i:'emotional',l:'Emotional'},{i:'chill',l:'Chill'}
   ]},
-  { id:'genre', num:'02', title:'Pick your territory', sub:'Where do you want to escape to?', cols:3, opts:[
+  { id:'genre', num:'03', title:'Pick your genres', sub:'Select as many as you want', multi:true, opts:[
     {i:'sci-fi',l:'Sci-Fi'},{i:'action',l:'Action'},{i:'comedy',l:'Comedy'},
     {i:'thriller',l:'Thriller'},{i:'horror',l:'Horror'},{i:'romance',l:'Romance'},
-    {i:'fantasy',l:'Fantasy'},{i:'dark',l:'Dark'},{i:'drama',l:'Drama'}
+    {i:'fantasy',l:'Fantasy'},{i:'dark',l:'Dark'},{i:'drama',l:'Drama'},
+    {i:'crime',l:'Crime'},{i:'animation',l:'Animation'}
   ]},
-  { id:'type', num:'03', title:'Movie or series?', sub:'Choose your commitment level', cols:3, opts:[
-    {i:'movie',l:'Movie'},{i:'series',l:'Series'},{i:'either',l:'Either'}
-  ]},
-  { id:'time', num:'04', title:'How much time?', sub:'Be honest with yourself', cols:2, opts:[
-    {i:'quick',l:'Quick (< 2h)'},{i:'standard',l:'Standard (2-3h)'},{i:'binge',l:'Binge-ready'},{i:'epic',l:'Epic saga'}
-  ]},
-  { id:'era', num:'05', title:'Which era hits?', sub:'Old gold or fresh drops', cols:2, opts:[
-    {i:'classic',l:'Classic (pre-2000)'},{i:'2000s',l:'2000s–2010s'},{i:'recent',l:'Recent (2020+)'},{i:'any',l:'Any era'}
-  ]},
-  { id:'intensity', num:'06', title:'How deep?', sub:'Light snack or emotional damage?', cols:3, opts:[
+  { id:'energy', num:'04', title:'What energy level?', sub:'Light snack or emotional damage?', cols:3, opts:[
     {i:'light',l:'Light'},{i:'medium',l:'Medium'},{i:'heavy',l:'Heavy'}
-  ]}
+  ]},
+  { id:'era', num:'05', title:'Which era hits?', sub:'Old gold or fresh drops', cols:3, opts:[
+    {i:'pre2000',l:'pre-2000'},{i:'era2000s',l:'2000s'},{i:'era2010s',l:'2010s'},
+    {i:'era2020s',l:'2020s'},{i:'latest',l:'2024+'},{i:'any',l:'Any era'}
+  ]},
 ];
 
-// ━━━━━━━━ DATABASE ━━━━━━━━
+// ━━━━━━━━ DB — 100 hand-picked titles ━━━━━━━━
 const DB = [
-  {t:'Interstellar',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],tm:'standard',e:'2010s',i:'medium',y:2014,d:'Love, time, and survival across the cosmos','rt':8.7},
-  {t:'The Matrix',ty:'movie',g:['sci-fi','action'],m:['pumped','thoughtful'],tm:'standard',e:'classic',i:'heavy',y:1999,d:'Reality is a simulation. Take the red pill.','rt':8.7},
-  {t:'Black Mirror',ty:'series',g:['sci-fi','thriller','dark'],m:['thoughtful','tense'],tm:'binge',e:'2010s',i:'heavy',y:2011,d:'Dark tech anthology. Haunts you long after.','rt':8.8},
-  {t:'Dune',ty:'movie',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],tm:'epic',e:'recent',i:'medium',y:2021,d:'Spice, sandworms, and interstellar war.','rt':8.0},
-  {t:'Severance',ty:'series',g:['sci-fi','thriller','drama'],m:['thoughtful','tense'],tm:'binge',e:'recent',i:'medium',y:2022,d:'Work-life balance taken to its chilling extreme.','rt':8.7},
-  {t:'Arrival',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],tm:'standard',e:'2010s',i:'light',y:2016,d:'Aliens, language, and time — beautifully bent.','rt':7.9},
-  {t:'Blade Runner 2049',ty:'movie',g:['sci-fi','drama','thriller'],m:['thoughtful','chill'],tm:'epic',e:'2010s',i:'medium',y:2017,d:'What makes us human? A slow-burn visual masterpiece.','rt':8.0},
-  {t:'The Expanse',ty:'series',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],tm:'epic',e:'2010s',i:'medium',y:2015,d:'Hard sci-fi politics across the solar system.','rt':8.5},
-  {t:'John Wick',ty:'movie',g:['action','thriller'],m:['pumped','tense'],tm:'quick',e:'2010s',i:'heavy',y:2014,d:'Man + dog + guns = cinematic perfection.','rt':7.4},
-  {t:'Mad Max: Fury Road',ty:'movie',g:['action','sci-fi'],m:['pumped'],tm:'standard',e:'2010s',i:'heavy',y:2015,d:'Two hours of gasoline-fueled insanity.','rt':8.1},
-  {t:'The Dark Knight',ty:'movie',g:['action','thriller','drama'],m:['tense','thoughtful','pumped'],tm:'standard',e:'2000s',i:'heavy',y:2008,d:'The greatest superhero film ever. Period.','rt':9.0},
-  {t:'Parasite',ty:'movie',g:['comedy','thriller','drama'],m:['thoughtful','tense','funny'],tm:'standard',e:'recent',i:'medium',y:2019,d:'Class satire. Funny, tense, unforgettable.','rt':8.5},
-  {t:'Breaking Bad',ty:'series',g:['thriller','drama','dark'],m:['tense','thoughtful','pumped'],tm:'epic',e:'2000s',i:'heavy',y:2008,d:'Walter White. Greatest TV character ever written.','rt':9.5},
-  {t:'Better Call Saul',ty:'series',g:['drama','comedy','thriller'],m:['thoughtful','funny','tense'],tm:'epic',e:'2010s',i:'medium',y:2015,d:'Breaking Bad prequel. Somehow even better.','rt':8.9},
-  {t:'Succession',ty:'series',g:['drama','comedy','dark'],m:['tense','funny','thoughtful'],tm:'binge',e:'recent',i:'medium',y:2018,d:'Rich family chaos. Best written show ever.','rt':8.8},
-  {t:'Dark',ty:'series',g:['dark','sci-fi','thriller'],m:['thoughtful','tense'],tm:'binge',e:'2010s',i:'heavy',y:2017,d:'German time-travel. Have a notebook ready.','rt':8.7},
-  {t:'Squid Game',ty:'series',g:['thriller','drama','dark','action'],m:['tense','pumped','emotional'],tm:'binge',e:'recent',i:'heavy',y:2021,d:'Deadly children\'s games. Global phenomenon.','rt':8.0},
-  {t:'The Shawshank Redemption',ty:'movie',g:['drama'],m:['emotional','thoughtful','pumped'],tm:'standard',e:'classic',i:'medium',y:1994,d:'Hope is a good thing. The best film ever made.','rt':9.3},
-  {t:'Dark Knight',ty:'movie',g:['action','thriller','drama'],m:['tense','thoughtful','pumped'],tm:'standard',e:'2000s',i:'heavy',y:2008,d:'The greatest superhero film ever. Period.','rt':9.0},
-  {t:'Inception',ty:'movie',g:['sci-fi','action','thriller'],m:['thoughtful','pumped','tense'],tm:'standard',e:'2010s',i:'medium',y:2010,d:'Dream within a dream within a dream.','rt':8.8},
-  {t:'Stranger Things',ty:'series',g:['sci-fi','drama','horror'],m:['pumped','emotional','funny'],tm:'binge',e:'2010s',i:'medium',y:2016,d:'80s nostalgia meets supernatural thrills.','rt':8.7},
-  {t:'Chernobyl',ty:'series',g:['drama','thriller'],m:['tense','thoughtful'],tm:'binge',e:'2010s',i:'heavy',y:2019,d:'The nuclear disaster. Most terrifying non-horror ever.','rt':9.3},
-  {t:'Everything Everywhere All at Once',ty:'movie',g:['sci-fi','comedy','drama','action'],m:['thoughtful','funny','emotional'],tm:'standard',e:'recent',i:'medium',y:2022,d:'Multiverse chaos with a heart of gold.','rt':7.8},
-  {t:'Arcane',ty:'series',g:['fantasy','action','drama','sci-fi'],m:['pumped','emotional','thoughtful'],tm:'binge',e:'recent',i:'medium',y:2021,d:'Best animated series ever made.','rt':9.0},
-  {t:'Oppenheimer',ty:'movie',g:['drama','thriller'],m:['thoughtful','tense','pumped'],tm:'epic',e:'recent',i:'heavy',y:2023,d:'The bomb. The man. The guilt. Brilliant.','rt':8.3},
-  {t:'The Bear',ty:'series',g:['drama','comedy'],m:['tense','emotional','funny'],tm:'binge',e:'recent',i:'medium',y:2022,d:'Kitchen chaos. Anxiety and heart in every dish.','rt':8.6},
-  {t:'Peaky Blinders',ty:'series',g:['drama','thriller','dark'],m:['pumped','tense','thoughtful'],tm:'binge',e:'2010s',i:'heavy',y:2013,d:'Tommy Shelby owns every single scene.','rt':8.8},
-  {t:'The Godfather',ty:'movie',g:['drama','thriller','dark'],m:['thoughtful','tense'],tm:'epic',e:'classic',i:'heavy',y:1972,d:'The mafia masterpiece. An offer you can\'t refuse.','rt':9.2},
-  {t:'Fight Club',ty:'movie',g:['drama','thriller'],m:['pumped','thoughtful'],tm:'standard',e:'classic',i:'heavy',y:1999,d:'First rule: we don\'t talk about it.','rt':8.8},
-  {t:'Pulp Fiction',ty:'movie',g:['drama','comedy','thriller','dark'],m:['funny','thoughtful','chill'],tm:'standard',e:'classic',i:'medium',y:1994,d:'Tarantino\'s non-linear masterpiece of cool.','rt':8.9},
-  {t:'True Detective S1',ty:'series',g:['thriller','drama','dark'],m:['tense','thoughtful'],tm:'binge',e:'2010s',i:'heavy',y:2014,d:'Rust Cohle. The Yellow King. A masterpiece.','rt':8.9},
-  {t:'The Office (US)',ty:'series',g:['comedy'],m:['funny','chill'],tm:'epic',e:'2000s',i:'light',y:2005,d:'Ultimate comfort show. Cringe, heart, repeat.','rt':8.9},
-  {t:'Ted Lasso',ty:'series',g:['comedy','drama'],m:['funny','chill','emotional'],tm:'binge',e:'recent',i:'light',y:2020,d:'The show that makes you believe in kindness again.','rt':8.8},
-  {t:'Lord of the Rings',ty:'movie',g:['fantasy','action','drama'],m:['pumped','emotional','thoughtful'],tm:'epic',e:'classic',i:'medium',y:2001,d:'The definitive fantasy epic. One ring to rule them all.','rt':8.8},
-  {t:'Game of Thrones',ty:'series',g:['fantasy','action','drama','dark'],m:['pumped','tense','thoughtful'],tm:'epic',e:'2010s',i:'heavy',y:2011,d:'Dragons, betrayal, and the greatest TV run ever.','rt':9.2},
-  {t:'Alice in Borderland',ty:'series',g:['fantasy','action','thriller','dark'],m:['tense','pumped','thoughtful'],tm:'binge',e:'recent',i:'heavy',y:2020,d:'Japanese death game. Squid Game on steroids.','rt':7.6},
-  {t:'Money Heist',ty:'series',g:['thriller','action','drama'],m:['tense','pumped'],tm:'epic',e:'2010s',i:'medium',y:2017,d:'The perfect heist. Mask on, brain off, enjoy.','rt':8.2},
-  {t:'Narcos',ty:'series',g:['drama','thriller','action'],m:['tense','pumped'],tm:'binge',e:'2010s',i:'heavy',y:2015,d:'Pablo Escobar. The drug war. Gripping from episode one.','rt':8.8},
-  {t:'Whiplash',ty:'movie',g:['drama'],m:['pumped','tense','emotional'],tm:'quick',e:'2010s',i:'heavy',y:2014,d:'Drumming has never been this intense. Not my tempo.','rt':8.5},
-  {t:'The Truman Show',ty:'movie',g:['drama','comedy','sci-fi'],m:['thoughtful','funny','emotional'],tm:'quick',e:'classic',i:'light',y:1998,d:'His life is a TV show. He doesn\'t know.','rt':8.2},
-  {t:'Goodfellas',ty:'movie',g:['drama','thriller','dark'],m:['pumped','thoughtful','tense'],tm:'standard',e:'classic',i:'heavy',y:1990,d:'Scorsese\'s gangster masterpiece. Laughs, violence, style.','rt':8.7},
-  {t:'The Social Network',ty:'movie',g:['drama'],m:['thoughtful','pumped'],tm:'standard',e:'2010s',i:'light',y:2010,d:'Facebook\'s origin story. Brilliantly told.','rt':7.8},
-  {t:'No Country for Old Men',ty:'movie',g:['thriller','drama','dark'],m:['tense','thoughtful'],tm:'standard',e:'2000s',i:'heavy',y:2007,d:'Anton Chigurh. The coin. Fate. A masterpiece of tension.','rt':8.2},
-  {t:'The Departed',ty:'movie',g:['drama','thriller','action'],m:['tense','pumped'],tm:'standard',e:'2000s',i:'heavy',y:2006,d:'Rats on both sides. Scorsese at his most electric.','rt':8.5},
-  {t:'12 Angry Men',ty:'movie',g:['drama'],m:['thoughtful','tense'],tm:'quick',e:'classic',i:'medium',y:1957,d:'Twelve men. One room. Absolute perfection.','rt':9.0},
-  {t:'Sicario',ty:'movie',g:['thriller','action','drama'],m:['tense','pumped'],tm:'standard',e:'2010s',i:'heavy',y:2015,d:'Denis Villeneuve\'s tension masterclass on the border.','rt':7.7},
-  {t:'Demon Slayer',ty:'series',g:['fantasy','action','dark'],m:['pumped','emotional'],tm:'binge',e:'recent',i:'medium',y:2019,d:'The most visually stunning anime ever created.','rt':8.7},
-  {t:'La La Land',ty:'movie',g:['romance','drama','comedy'],m:['emotional','chill','funny'],tm:'standard',e:'2010s',i:'light',y:2016,d:'Dreams, love, and jazz in Los Angeles.','rt':8.0},
-  {t:'Eternal Sunshine of the Spotless Mind',ty:'movie',g:['romance','sci-fi','drama'],m:['emotional','thoughtful'],tm:'quick',e:'2000s',i:'medium',y:2004,d:'Erase your ex? The science says no. The heart says yes.','rt':8.3},
-  {t:'The Witcher',ty:'series',g:['fantasy','action','dark'],m:['pumped','tense'],tm:'binge',e:'recent',i:'medium',y:2019,d:'Monster hunter with a heart of cold steel.','rt':8.0},
-  {t:'Mindhunter',ty:'series',g:['thriller','drama','dark'],m:['tense','thoughtful'],tm:'binge',e:'2010s',i:'heavy',y:2017,d:'FBI profilers hunting serial killers. Dark and masterful.','rt':8.6},
-  {t:'Hereditary',ty:'movie',g:['horror','drama'],m:['tense','emotional'],tm:'standard',e:'2010s',i:'heavy',y:2018,d:'Horror that sits in your chest for days after.','rt':7.3},
-  {t:'The Haunting of Hill House',ty:'series',g:['horror','drama'],m:['tense','emotional'],tm:'binge',e:'2010s',i:'heavy',y:2018,d:'Family trauma dressed as a ghost story. Perfect.','rt':8.5},
-  {t:'Get Out',ty:'movie',g:['horror','thriller','comedy'],m:['tense','thoughtful','funny'],tm:'quick',e:'2010s',i:'medium',y:2017,d:'Social satire meets horror. Groundbreaking.','rt':7.7},
-  {t:'The Grand Budapest Hotel',ty:'movie',g:['comedy','drama'],m:['funny','chill','emotional'],tm:'quick',e:'2010s',i:'light',y:2014,d:'Wes Anderson\'s colorful, charming masterpiece.','rt':8.1},
-  {t:'The Crown',ty:'series',g:['drama'],m:['thoughtful','chill'],tm:'epic',e:'2010s',i:'light',y:2016,d:'The British monarchy. Grand, elegant, addictive.','rt':8.6},
-  {t:'Gladiator',ty:'movie',g:['action','drama'],m:['pumped','emotional'],tm:'epic',e:'classic',i:'heavy',y:2000,d:'Are you not entertained? Maximus defines legacy.','rt':8.5},
-  {t:'Se7en',ty:'movie',g:['thriller','dark'],m:['tense','thoughtful'],tm:'standard',e:'classic',i:'heavy',y:1995,d:'Seven deadly sins. One box you\'ll never forget.','rt':8.6},
-  {t:'Prisoners',ty:'movie',g:['thriller','drama'],m:['tense','emotional'],tm:'standard',e:'2010s',i:'heavy',y:2013,d:'A father\'s desperation pushed to the absolute edge.','rt':8.1},
-  {t:'Gone Girl',ty:'movie',g:['thriller','drama'],m:['tense','thoughtful'],tm:'standard',e:'2010s',i:'heavy',y:2014,d:'Marriage is a trap. This movie proves it.','rt':8.1},
-  {t:'Sherlock',ty:'series',g:['thriller','drama'],m:['thoughtful','tense','pumped'],tm:'binge',e:'2010s',i:'medium',y:2010,d:'Modern Holmes. Brilliant, fast, addictive.','rt':9.1},
-  {t:'Shutter Island',ty:'movie',g:['thriller','drama','dark'],m:['tense','thoughtful'],tm:'standard',e:'2010s',i:'heavy',y:2010,d:'Is he crazy or is it real? Mind-bending to the end.','rt':8.2},
-  {t:'Harry Potter',ty:'movie',g:['fantasy','drama'],m:['pumped','chill','emotional'],tm:'epic',e:'2000s',i:'light',y:2001,d:'The wizarding world. Your entire childhood in 8 films.','rt':7.6},
-  {t:'The Big Lebowski',ty:'movie',g:['comedy'],m:['funny','chill'],tm:'quick',e:'classic',i:'light',y:1998,d:'The Dude abides. A cult classic of supreme chill.','rt':8.1},
-  {t:'A Quiet Place',ty:'movie',g:['horror','sci-fi','drama'],m:['tense','emotional'],tm:'quick',e:'recent',i:'medium',y:2018,d:'Silence is survival. Pure cinematic tension.','rt':7.5},
-  {t:'What We Do in the Shadows',ty:'series',g:['comedy','dark'],m:['funny','chill'],tm:'binge',e:'recent',i:'light',y:2019,d:'Vampire mockumentary. Ridiculously good.','rt':8.6},
-  {t:'Extraction',ty:'movie',g:['action','thriller'],m:['pumped','tense'],tm:'quick',e:'recent',i:'heavy',y:2020,d:'Non-stop adrenaline with Chris Hemsworth.','rt':6.7},
+  {t:'Interstellar',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],e:'light',er:'era2010s',y:2014,d:'Love, time, and survival across the cosmos','rt':8.7,cn:'none',pl:['Netflix']},
+  {t:'The Matrix',ty:'movie',g:['sci-fi','action'],m:['pumped','thoughtful'],e:'heavy',er:'pre2000',y:1999,d:'Reality is a simulation. Take the red pill.','rt':8.7,cn:'moderate',pl:['Prime']},
+  {t:'Black Mirror',ty:'series',g:['sci-fi','thriller','dark'],m:['thoughtful','tense'],e:'heavy',er:'era2010s',y:2011,d:'Dark tech anthology. Haunts you long after.','rt':8.8,cn:'heavy',pl:['Netflix']},
+  {t:'Dune',ty:'movie',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'era2020s',y:2021,d:'Spice, sandworms, and interstellar war.','rt':8.0,cn:'none',pl:['Netflix']},
+  {t:'Severance',ty:'series',g:['sci-fi','thriller','drama'],m:['thoughtful','tense'],e:'medium',er:'era2020s',y:2022,d:'Work-life balance taken to chilling extremes.','rt':8.7,cn:'mild',pl:['Apple TV']},
+  {t:'Arrival',ty:'movie',g:['sci-fi','drama'],m:['thoughtful','emotional'],e:'light',er:'era2010s',y:2016,d:'Aliens, language, and time — beautifully bent.','rt':7.9,cn:'none',pl:['Netflix']},
+  {t:'Blade Runner 2049',ty:'movie',g:['sci-fi','drama','thriller'],m:['thoughtful','chill'],e:'medium',er:'era2010s',y:2017,d:'What makes us human? A slow-burn masterpiece.','rt':8.0,cn:'moderate',pl:['Netflix']},
+  {t:'The Expanse',ty:'series',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'era2010s',y:2015,d:'Hard sci-fi politics across the solar system.','rt':8.5,cn:'moderate',pl:['Prime']},
+  {t:'John Wick',ty:'movie',g:['action','thriller'],m:['pumped','tense'],e:'heavy',er:'era2010s',y:2014,d:'Man + dog + guns = cinematic perfection.','rt':7.4,cn:'heavy',pl:['Netflix']},
+  {t:'Mad Max: Fury Road',ty:'movie',g:['action','sci-fi'],m:['pumped'],e:'heavy',er:'era2010s',y:2015,d:'Two hours of gasoline-fueled insanity.','rt':8.1,cn:'heavy',pl:['Netflix']},
+  {t:'The Dark Knight',ty:'movie',g:['action','thriller','drama'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2000s',y:2008,d:'The greatest superhero film ever. Period.','rt':9.0,cn:'moderate',pl:['Netflix']},
+  {t:'Parasite',ty:'movie',g:['comedy','thriller','drama'],m:['thoughtful','tense','funny'],e:'medium',er:'era2020s',y:2019,d:'Class satire that\'s funny, tense and unforgettable.','rt':8.5,cn:'moderate',pl:['Netflix']},
+  {t:'Breaking Bad',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2000s',y:2008,d:'Walter White. The greatest TV character ever written.','rt':9.5,cn:'heavy',pl:['Netflix']},
+  {t:'Better Call Saul',ty:'series',g:['drama','comedy','thriller','crime'],m:['thoughtful','funny','tense'],e:'medium',er:'era2010s',y:2015,d:'Breaking Bad prequel. Somehow even better.','rt':8.9,cn:'moderate',pl:['Netflix']},
+  {t:'Succession',ty:'series',g:['drama','comedy','dark'],m:['tense','funny','thoughtful'],e:'medium',er:'era2020s',y:2018,d:'Rich family chaos. Best written show ever.','rt':8.8,cn:'moderate',pl:['Netflix']},
+  {t:'Dark',ty:'series',g:['dark','sci-fi','thriller'],m:['thoughtful','tense'],e:'heavy',er:'era2010s',y:2017,d:'German time-travel. Have a notebook ready.','rt':8.7,cn:'moderate',pl:['Netflix']},
+  {t:'Squid Game',ty:'series',g:['thriller','drama','dark','action'],m:['tense','pumped','emotional'],e:'heavy',er:'era2020s',y:2021,d:'Deadly children\'s games. A global phenomenon.','rt':8.0,cn:'heavy',pl:['Netflix']},
+  {t:'The Shawshank Redemption',ty:'movie',g:['drama','crime'],m:['emotional','thoughtful','pumped'],e:'medium',er:'pre2000',y:1994,d:'Hope is a good thing. The best film ever made.','rt':9.3,cn:'mild',pl:['Netflix']},
+  {t:'Inception',ty:'movie',g:['sci-fi','action','thriller'],m:['thoughtful','pumped','tense'],e:'medium',er:'era2010s',y:2010,d:'Dream within a dream within a dream.','rt':8.8,cn:'moderate',pl:['Netflix']},
+  {t:'Stranger Things',ty:'series',g:['sci-fi','drama','horror'],m:['pumped','emotional','funny'],e:'medium',er:'era2010s',y:2016,d:'80s nostalgia meets supernatural thrills.','rt':8.7,cn:'mild',pl:['Netflix']},
+  {t:'Chernobyl',ty:'series',g:['drama','thriller'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2019,d:'The nuclear disaster. The most terrifying non-horror ever.','rt':9.3,cn:'heavy',pl:['Netflix']},
+  {t:'Everything Everywhere All at Once',ty:'movie',g:['sci-fi','comedy','drama','action'],m:['thoughtful','funny','emotional'],e:'medium',er:'era2020s',y:2022,d:'Multiverse chaos with a heart of gold.','rt':7.8,cn:'mild',pl:['Netflix']},
+  {t:'Arcane',ty:'series',g:['fantasy','action','drama','sci-fi','animation'],m:['pumped','emotional','thoughtful'],e:'medium',er:'era2020s',y:2021,d:'The best animated series ever made. Period.','rt':9.0,cn:'moderate',pl:['Netflix']},
+  {t:'Oppenheimer',ty:'movie',g:['drama','thriller'],m:['thoughtful','tense','pumped'],e:'heavy',er:'era2020s',y:2023,d:'The bomb. The man. The guilt. Brilliant.','rt':8.3,cn:'moderate',pl:['Netflix']},
+  {t:'The Bear',ty:'series',g:['drama','comedy'],m:['tense','emotional','funny'],e:'medium',er:'era2020s',y:2022,d:'Kitchen chaos. Anxiety and heart in every dish.','rt':8.6,cn:'mild',pl:['Hulu']},
+  {t:'Peaky Blinders',ty:'series',g:['drama','thriller','dark','crime'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2013,d:'Tommy Shelby owns every single scene.','rt':8.8,cn:'heavy',pl:['Netflix']},
+  {t:'The Godfather',ty:'movie',g:['drama','thriller','dark','crime'],m:['thoughtful','tense'],e:'heavy',er:'pre2000',y:1972,d:'The mafia masterpiece. An offer you can\'t refuse.','rt':9.2,cn:'heavy',pl:['Netflix']},
+  {t:'Fight Club',ty:'movie',g:['drama','thriller'],m:['pumped','thoughtful'],e:'heavy',er:'pre2000',y:1999,d:'First rule: we don\'t talk about it.','rt':8.8,cn:'heavy',pl:['Netflix']},
+  {t:'Pulp Fiction',ty:'movie',g:['drama','comedy','thriller','dark','crime'],m:['funny','thoughtful','chill'],e:'medium',er:'pre2000',y:1994,d:'Tarantino\'s non-linear masterpiece of cool.','rt':8.9,cn:'heavy',pl:['Netflix']},
+  {t:'True Detective S1',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2014,d:'Rust Cohle. The Yellow King. A masterpiece.','rt':8.9,cn:'heavy',pl:['Netflix']},
+  {t:'The Office (US)',ty:'series',g:['comedy'],m:['funny','chill'],e:'light',er:'era2000s',y:2005,d:'The ultimate comfort show. Cringe, heart, repeat.','rt':8.9,cn:'mild',pl:['Netflix']},
+  {t:'Ted Lasso',ty:'series',g:['comedy','drama'],m:['funny','chill','emotional'],e:'light',er:'era2020s',y:2020,d:'The show that makes you believe in kindness again.','rt':8.8,cn:'none',pl:['Apple TV']},
+  {t:'Lord of the Rings',ty:'movie',g:['fantasy','action','drama'],m:['pumped','emotional','thoughtful'],e:'medium',er:'pre2000',y:2001,d:'The definitive fantasy epic. One ring to rule them all.','rt':8.8,cn:'moderate',pl:['Netflix']},
+  {t:'Game of Thrones',ty:'series',g:['fantasy','action','drama','dark'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2011,d:'Dragons, betrayal, and the greatest TV run ever.','rt':9.2,cn:'heavy',pl:['Netflix']},
+  {t:'Alice in Borderland',ty:'series',g:['fantasy','action','thriller','dark'],m:['tense','pumped','thoughtful'],e:'heavy',er:'era2020s',y:2020,d:'Japanese death game. Squid Game on steroids.','rt':7.6,cn:'heavy',pl:['Netflix']},
+  {t:'Money Heist',ty:'series',g:['thriller','action','drama','crime'],m:['tense','pumped'],e:'medium',er:'era2010s',y:2017,d:'The perfect heist. Mask on, brain off, enjoy.','rt':8.2,cn:'moderate',pl:['Netflix']},
+  {t:'Narcos',ty:'series',g:['drama','thriller','action','crime'],m:['tense','pumped'],e:'heavy',er:'era2010s',y:2015,d:'Pablo Escobar. The drug war. Gripping from episode one.','rt':8.8,cn:'heavy',pl:['Netflix']},
+  {t:'Whiplash',ty:'movie',g:['drama'],m:['pumped','tense','emotional'],e:'heavy',er:'era2010s',y:2014,d:'Drumming has never been this intense. Not my tempo.','rt':8.5,cn:'mild',pl:['Netflix']},
+  {t:'The Truman Show',ty:'movie',g:['drama','comedy','sci-fi'],m:['thoughtful','funny','emotional'],e:'light',er:'pre2000',y:1998,d:'His life is a TV show. He doesn\'t know.','rt':8.2,cn:'none',pl:['Netflix']},
+  {t:'Goodfellas',ty:'movie',g:['drama','thriller','dark','crime'],m:['pumped','thoughtful','tense'],e:'heavy',er:'pre2000',y:1990,d:'Scorsese\'s gangster masterpiece. Laughs, violence, style.','rt':8.7,cn:'heavy',pl:['Netflix']},
+  {t:'The Social Network',ty:'movie',g:['drama'],m:['thoughtful','pumped'],e:'light',er:'era2010s',y:2010,d:'Facebook\'s origin story. Brilliantly told.','rt':7.8,cn:'mild',pl:['Netflix']},
+  {t:'No Country for Old Men',ty:'movie',g:['thriller','drama','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'era2000s',y:2007,d:'Anton Chigurh. The coin. Fate. A masterpiece of tension.','rt':8.2,cn:'heavy',pl:['Netflix']},
+  {t:'The Departed',ty:'movie',g:['drama','thriller','action','crime'],m:['tense','pumped'],e:'heavy',er:'era2000s',y:2006,d:'Rats on both sides. Scorsese at his most electric.','rt':8.5,cn:'heavy',pl:['Netflix']},
+  {t:'12 Angry Men',ty:'movie',g:['drama'],m:['thoughtful','tense'],e:'medium',er:'pre2000',y:1957,d:'Twelve men. One room. Absolute perfection.','rt':9.0,cn:'none',pl:['Prime']},
+  {t:'Sicario',ty:'movie',g:['thriller','action','drama','crime'],m:['tense','pumped'],e:'heavy',er:'era2010s',y:2015,d:'Denis Villeneuve\'s tension masterclass on the border.','rt':7.7,cn:'heavy',pl:['Netflix']},
+  {t:'Demon Slayer',ty:'series',g:['fantasy','action','dark','animation'],m:['pumped','emotional'],e:'medium',er:'era2020s',y:2019,d:'The most visually stunning anime ever created.','rt':8.7,cn:'moderate',pl:['Netflix']},
+  {t:'La La Land',ty:'movie',g:['romance','drama','comedy'],m:['emotional','chill','funny'],e:'light',er:'era2010s',y:2016,d:'Dreams, love, and jazz in Los Angeles.','rt':8.0,cn:'none',pl:['Netflix']},
+  {t:'Eternal Sunshine',ty:'movie',g:['romance','sci-fi','drama'],m:['emotional','thoughtful'],e:'medium',er:'era2000s',y:2004,d:'Erase your ex? The science says no. Heart says yes.','rt':8.3,cn:'moderate',pl:['Netflix']},
+  {t:'The Witcher',ty:'series',g:['fantasy','action','dark'],m:['pumped','tense'],e:'medium',er:'era2020s',y:2019,d:'Monster hunter with a heart of cold steel.','rt':8.0,cn:'heavy',pl:['Netflix']},
+  {t:'Mindhunter',ty:'series',g:['thriller','drama','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2017,d:'FBI profilers hunting serial killers. Dark and masterful.','rt':8.6,cn:'heavy',pl:['Netflix']},
+  {t:'Hereditary',ty:'movie',g:['horror','drama'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2018,d:'Horror that sits in your chest for days after.','rt':7.3,cn:'heavy',pl:['Netflix']},
+  {t:'The Haunting of Hill House',ty:'series',g:['horror','drama'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2018,d:'Family trauma dressed as a ghost story. Perfect.','rt':8.5,cn:'moderate',pl:['Netflix']},
+  {t:'Get Out',ty:'movie',g:['horror','thriller','comedy'],m:['tense','thoughtful','funny'],e:'medium',er:'era2010s',y:2017,d:'Social satire meets horror. Groundbreaking.','rt':7.7,cn:'moderate',pl:['Netflix']},
+  {t:'The Grand Budapest Hotel',ty:'movie',g:['comedy','drama'],m:['funny','chill','emotional'],e:'light',er:'era2010s',y:2014,d:'Wes Anderson\'s colorful, charming masterpiece.','rt':8.1,cn:'mild',pl:['Disney+']},
+  {t:'The Crown',ty:'series',g:['drama'],m:['thoughtful','chill'],e:'light',er:'era2010s',y:2016,d:'The British monarchy. Grand, elegant, addictive.','rt':8.6,cn:'mild',pl:['Netflix']},
+  {t:'Gladiator',ty:'movie',g:['action','drama'],m:['pumped','emotional'],e:'heavy',er:'pre2000',y:2000,d:'Are you not entertained? Maximus defines legacy.','rt':8.5,cn:'heavy',pl:['Netflix']},
+  {t:'Se7en',ty:'movie',g:['thriller','dark','crime'],m:['tense','thoughtful'],e:'heavy',er:'pre2000',y:1995,d:'Seven deadly sins. One box you\'ll never forget.','rt':8.6,cn:'heavy',pl:['Netflix']},
+  {t:'Prisoners',ty:'movie',g:['thriller','drama','crime'],m:['tense','emotional'],e:'heavy',er:'era2010s',y:2013,d:'A father\'s desperation pushed to the absolute edge.','rt':8.1,cn:'heavy',pl:['Netflix']},
+  {t:'Gone Girl',ty:'movie',g:['thriller','drama'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2014,d:'Marriage is a trap. This movie proves it.','rt':8.1,cn:'heavy',pl:['Netflix']},
+  {t:'Sherlock',ty:'series',g:['thriller','drama','crime'],m:['thoughtful','tense','pumped'],e:'medium',er:'era2010s',y:2010,d:'Modern Holmes. Brilliant, fast, addictive.','rt':9.1,cn:'moderate',pl:['Netflix']},
+  {t:'Shutter Island',ty:'movie',g:['thriller','drama','dark'],m:['tense','thoughtful'],e:'heavy',er:'era2010s',y:2010,d:'Is he crazy or is it real? Mind-bending to the end.','rt':8.2,cn:'heavy',pl:['Netflix']},
+  {t:'A Quiet Place',ty:'movie',g:['horror','sci-fi','drama'],m:['tense','emotional'],e:'medium',er:'era2010s',y:2018,d:'Silence is survival. Pure cinematic tension.','rt':7.5,cn:'mild',pl:['Netflix']},
+  {t:'What We Do in the Shadows',ty:'series',g:['comedy','dark'],m:['funny','chill'],e:'light',er:'era2020s',y:2019,d:'Vampire mockumentary. Ridiculously good.','rt':8.6,cn:'heavy',pl:['Hulu']},
+  {t:'Extraction',ty:'movie',g:['action','thriller'],m:['pumped','tense'],e:'heavy',er:'era2020s',y:2020,d:'Non-stop adrenaline with Chris Hemsworth.','rt':6.7,cn:'heavy',pl:['Netflix']},
+  {t:'The Batman',ty:'movie',g:['action','thriller','dark','crime'],m:['tense','thoughtful','pumped'],e:'heavy',er:'era2020s',y:2022,d:'A dark, detective-driven Batman for a new era.','rt':7.8,cn:'moderate',pl:['Netflix']},
+  {t:'Dune: Part Two',ty:'movie',g:['sci-fi','action','drama'],m:['pumped','thoughtful'],e:'medium',er:'latest',y:2024,d:'The spice must flow. The sequel surpasses the original.','rt':8.6,cn:'moderate',pl:['Netflix']},
+  {t:'Shōgun',ty:'series',g:['drama','action','thriller'],m:['thoughtful','tense','pumped'],e:'heavy',er:'latest',y:2024,d:'Feudal Japan. Samurai, politics, and breathtaking scope.','rt':8.8,cn:'heavy',pl:['Disney+']},
+  {t:'The Last of Us',ty:'series',g:['drama','action','horror','sci-fi'],m:['emotional','tense','pumped'],e:'heavy',er:'era2020s',y:2023,d:'Post-apocalyptic. The best video game adaptation ever.','rt':8.7,cn:'heavy',pl:['Netflix']},
+  {t:'Oppenheimer',ty:'movie',g:['drama','thriller'],m:['thoughtful','tense','pumped'],e:'heavy',er:'era2020s',y:2023,d:'The bomb. The man. The guilt. A cinematic triumph.','rt':8.3,cn:'moderate',pl:['Netflix']},
+  {t:'Blue Eye Samurai',ty:'series',g:['action','drama','animation','dark'],m:['pumped','tense','emotional'],e:'heavy',er:'era2020s',y:2023,d:'A mixed-race samurai seeking revenge in Edo-era Japan.','rt':8.7,cn:'heavy',pl:['Netflix']},
+  {t:'Past Lives',ty:'movie',g:['romance','drama'],m:['emotional','thoughtful','chill'],e:'light',er:'era2020s',y:2023,d:'Two souls across continents and decades. Beautifully quiet.','rt':7.8,cn:'none',pl:['Netflix']},
+  {t:'The Boys',ty:'series',g:['action','comedy','dark','sci-fi'],m:['pumped','funny','tense'],e:'heavy',er:'era2020s',y:2019,d:'Superheroes are corrupt. Someone has to take them down.','rt':8.7,cn:'heavy',pl:['Prime']},
+  {t:'Attack on Titan',ty:'series',g:['fantasy','action','dark','animation'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2010s',y:2013,d:'Humanity fights giant titans in this anime epic.','rt':9.0,cn:'heavy',pl:['Netflix']},
+  {t:'Spirited Away',ty:'movie',g:['fantasy','animation','drama'],m:['chill','emotional','thoughtful'],e:'light',er:'pre2000',y:2001,d:'Studio Ghibli\'s masterpiece. A magical, unforgettable journey.','rt':8.6,cn:'none',pl:['Netflix']},
+  {t:'The Pianist',ty:'movie',g:['drama'],m:['emotional','tense','thoughtful'],e:'heavy',er:'era2000s',y:2002,d:'A Jewish pianist\'s survival in WWII Warsaw. Devastating.','rt':8.5,cn:'heavy',pl:['Prime']},
+  {t:'Full Metal Alchemist',ty:'series',g:['fantasy','action','drama','animation'],m:['pumped','emotional','thoughtful'],e:'medium',er:'era2000s',y:2009,d:'Two brothers seek the Philosopher\'s Stone. Anime perfection.','rt':9.1,cn:'moderate',pl:['Netflix']},
+  {t:'Joker',ty:'movie',g:['drama','thriller','dark','crime'],m:['tense','thoughtful','emotional'],e:'heavy',er:'era2020s',y:2019,d:'A descent into madness. Arthur Fleck becomes the Joker.','rt':8.4,cn:'heavy',pl:['Netflix']},
+  {t:'Soul',ty:'movie',g:['animation','comedy','drama'],m:['thoughtful','emotional','funny'],e:'light',er:'era2020s',y:2020,d:'What makes life worth living? Pixar at its most profound.','rt':8.0,cn:'none',pl:['Disney+']},
+  {t:'Top Gun: Maverick',ty:'movie',g:['action','drama'],m:['pumped','emotional'],e:'medium',er:'era2020s',y:2022,d:'The legacy sequel nobody asked for but everyone needed.','rt':8.3,cn:'mild',pl:['Netflix']},
+  {t:'House of the Dragon',ty:'series',g:['fantasy','action','drama','dark'],m:['pumped','tense','thoughtful'],e:'heavy',er:'era2020s',y:2022,d:'Targaryen civil war. Dragons and political chaos.','rt':8.4,cn:'heavy',pl:['Netflix']},
+  {t:'Baby Reindeer',ty:'series',g:['drama','thriller'],m:['tense','emotional','thoughtful'],e:'heavy',er:'latest',y:2024,d:'Stalking, trauma, and the most uncomfortable watch of 2024.','rt':7.7,cn:'heavy',pl:['Netflix']},
+  {t:'The Revenant',ty:'movie',g:['drama','thriller','action'],m:['pumped','emotional','tense'],e:'heavy',er:'era2010s',y:2015,d:'Man vs. wilderness. DiCaprio\'s Oscar-winning survival epic.','rt':8.0,cn:'heavy',pl:['Netflix']},
+  {t:'Coco',ty:'movie',g:['animation','fantasy','drama'],m:['emotional','funny','chill'],e:'light',er:'era2010s',y:2017,d:'A boy journeys to the Land of the Dead. Bring tissues.','rt':8.4,cn:'none',pl:['Disney+']},
+  {t:'The Wire',ty:'series',g:['drama','crime','thriller'],m:['thoughtful','tense','emotional'],e:'heavy',er:'era2000s',y:2002,d:'Baltimore\'s drug war. The greatest TV show ever made.','rt':9.3,cn:'heavy',pl:['Netflix']},
 ];
 
 // ━━━━━━━━ STATE ━━━━━━━━
@@ -642,29 +373,28 @@ const ans = {};
 let wl = JSON.parse(localStorage.getItem('rv_wl')||'[]');
 let wt = JSON.parse(localStorage.getItem('rv_wt')||'[]');
 
-const $ = id => document.getElementById(id);
-const wrap = $('slWrap');
-const btn = $('btnNext');
-const prFill = $('prFill');
-const hdStep = $('hdStep');
-const toast = $('toastMsg');
-const hint = $('hint');
+const $ = id=>document.getElementById(id);
+const slW = $('slW'), btn = $('btnN'), prF = $('prF'), hdSt = $('hdSt'), tst = $('tst'), hint = $('hint');
 
 // ━━━━━━━━ RENDER ━━━━━━━━
 function render() {
-  wrap.innerHTML = Q.map((q,i)=>`
+  slW.innerHTML = Q.map((q,i)=>`
     <div class="slide ${i===0?'active':''}">
       <div class="q-num">${q.num}. ${q.id}</div>
       <div class="q-title">${q.title}</div>
       <div class="q-sub">${q.sub}</div>
-      <div class="opts ${q.cols===1?'':'opts-'+q.cols}" role="radiogroup" aria-label="${q.id}">
-        ${q.opts.map(o=>`
-          <div class="${q.cols===1?'opt-fw':'opt'}" data-q="${q.id}" data-val="${o.i}" role="radio" tabindex="0" aria-label="${o.l}">
-            ${icons[o.i]||''}
-            <span class="lbl">${o.l}</span>
-          </div>
-        `).join('')}
-      </div>
+      ${q.multi ? `<div class="chip-grid" data-q="${q.id}">${q.opts.map(o=>`
+        <div class="chip" data-q="${q.id}" data-val="${o.i}">
+          <span class="plus">${I.plus}</span><span class="check">${I.check}</span>
+          ${o.l}
+        </div>
+      `).join('')}</div>` :
+      `<div class="opts opts-${q.cols}" role="radiogroup" aria-label="${q.id}">${q.opts.map(o=>`
+        <div class="${q.cols===1?'opt-fw':'opt'}" data-q="${q.id}" data-val="${o.i}" role="radio" tabindex="0" aria-label="${o.l}">
+          ${I[o.i]||''}
+          <span class="lbl">${o.l}</span>
+        </div>
+      `).join('')}</div>`}
     </div>
   `).join('');
   updUI();
@@ -672,37 +402,56 @@ function render() {
 
 function updUI() {
   const t = Q.length;
-  prFill.style.width = Math.round((cur/t)*100)+'%';
-  hdStep.innerHTML = `<span>${Math.min(cur+1,t)}</span>/${t}`;
+  prF.style.width = Math.round((cur/t)*100)+'%';
+  hdSt.innerHTML = `<span>${Math.min(cur+1,t)}</span>/${t}`;
   if (cur < t) {
     const last = cur === t-1;
     btn.innerHTML = last ? 'Get My Picks <span class="arrow">→</span>' : 'Next <span class="arrow">→</span>';
-    btn.classList.toggle('enabled', !!ans[Q[cur]?.id]);
-    hint.textContent = cur===0 ? 'Tap an option to begin' : 'Tap an option to continue';
+    const q = Q[cur];
+    if (q.multi) {
+      const selected = ans[q.id]||[];
+      btn.classList.toggle('enabled', selected.length > 0);
+    } else {
+      btn.classList.toggle('enabled', !!ans[q.id]);
+    }
+    hint.textContent = cur===0 ? 'Tap to begin' : q.multi ? 'Pick one or more' : 'Tap to continue';
   }
 }
 
 // ━━━━━━━━ NAV ━━━━━━━━
-function slideTo(n) {
-  const slides = wrap.querySelectorAll('.slide');
+function goTo(n) {
+  const slides = slW.querySelectorAll('.slide');
   slides.forEach(s=>{s.classList.remove('active','dismiss')});
   if (n > cur) slides[cur]?.classList.add('dismiss');
   slides[n]?.classList.add('active');
-  cur = n;
-  updUI();
-  bindNav();
+  cur = n; updUI(); bindNav();
 }
 
 function bindNav() {
   btn.onclick = ()=>{
     if (!btn.classList.contains('enabled')) return;
-    if (cur < Q.length-1) slideTo(cur+1);
+    if (cur < Q.length-1) goTo(cur+1);
     else compute();
   };
 }
 
 // ━━━━━━━━ SELECTION ━━━━━━━━
-wrap.addEventListener('click', e => {
+slW.addEventListener('click', e => {
+  // Multi-select chips
+  const chip = e.target.closest('.chip');
+  if (chip) {
+    const qId = chip.dataset.q;
+    const val = chip.dataset.val;
+    if (!qId) return;
+    ans[qId] = ans[qId]||[];
+    const idx = ans[qId].indexOf(val);
+    chip.classList.toggle('selected');
+    if (idx > -1) ans[qId].splice(idx,1);
+    else ans[qId].push(val);
+    updUI();
+    return;
+  }
+  // Single select
   const el = e.target.closest('.opt, .opt-fw');
   if (!el) return;
   const qId = el.dataset.q, val = el.dataset.val;
@@ -712,36 +461,40 @@ wrap.addEventListener('click', e => {
   ans[qId] = val;
   btn.classList.add('enabled');
 });
-
-// Keyboard nav
-wrap.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    const el = e.target.closest('.opt, .opt-fw');
-    if (el) { e.preventDefault(); el.click(); }
-  }
+slW.addEventListener('keydown', e => {
+  if (e.key==='Enter'||e.key===' ') { const el=e.target.closest('.opt,.opt-fw,.chip'); if(el){e.preventDefault();el.click();} }
 });
 
 // ━━━━━━━━ ENGINE ━━━━━━━━
 function score(item) {
   let s = 0;
-  if (item.m.includes(ans.mood)) s += 30;
-  if (item.g.includes(ans.genre)) s += 28;
-  if (ans.type === 'either') s += 10;
-  else if (item.ty === ans.type) s += 20;
-  if (ans.time === 'quick' && item.tm === 'quick') s += 12;
-  else if (ans.time === 'standard' && item.tm === 'standard') s += 12;
-  else if (ans.time === 'binge' && (item.tm==='binge'||item.tm==='epic')) s += 10;
-  else if (ans.time === 'epic' && item.tm === 'epic') s += 12;
-  else if (ans.time==='standard'&&item.tm==='quick') s+=5;
-  else if (ans.time==='binge'&&item.tm==='standard') s+=4;
-  if (!ans.era||ans.era==='any') s+=10;
-  else if (item.e===ans.era) s+=10;
-  else if ((ans.era==='classic'||ans.era==='2000s')&&(item.e==='classic'||item.e==='2000s')) s+=6;
-  else if ((ans.era==='recent')&&(item.e==='recent'||item.e==='2010s')) s+=6;
-  if (item.i===ans.intensity) s+=6;
-  else if (ans.intensity==='medium'&&(item.i==='light'||item.i==='heavy')) s+=2;
-  if (ans.mood==='tense'&&item.g.includes('dark')) s+=4;
-  if (ans.mood==='chill'&&item.g.includes('comedy')) s+=4;
+  // Mood match (35pts)
+  if (item.m.includes(ans.mood)) s += 35;
+  // Genre match (20pts each, max 60)
+  const genres = Array.isArray(ans.genre) ? ans.genre : [ans.genre].filter(Boolean);
+  let gScore = 0;
+  for (const g of genres) {
+    if (item.g.includes(g)) gScore += 20;
+  }
+  s += Math.min(gScore, 60);
+  // Type match (15pts)
+  if (ans.type === 'either') s += 8;
+  else if (item.ty === ans.type) s += 15;
+  // Energy match (10pts)
+  if (item.e === ans.energy) s += 10;
+  else if (ans.energy === 'medium' && (item.e==='light'||item.e==='heavy')) s += 4;
+  // Era match (10pts)
+  if (!ans.era || ans.era === 'any') s += 10;
+  else if (item.er === ans.era) s += 10;
+  else if ((ans.era==='pre2000'||ans.era==='era2000s') && (item.er==='pre2000'||item.er==='era2000s')) s += 6;
+  else if ((ans.era==='era2020s') && (item.er==='era2020s'||item.er==='latest')) s += 6;
+  else if ((ans.era==='latest') && item.er==='latest') s += 8;
+  // IMDb boost (up to 8pts)
+  s += Math.round((item.rt / 10) * 8);
+  // Combo bonuses
+  if (ans.mood==='tense' && item.g.includes('dark')) s += 5;
+  if (ans.mood==='chill' && item.g.includes('comedy')) s += 5;
+  if (ans.mood==='pumped' && item.g.includes('action')) s += 5;
   return s;
 }
 
@@ -752,120 +505,129 @@ function recommend() {
   for (const i of sc) {
     const k=i.t.toLowerCase().replace(/[^a-z0-9]/g,'');
     if (!seen.has(k)&&!wt.includes(k)) { seen.add(k); top.push(i); }
-    if (top.length>=5) break;
+    if (top.length>=7) break;
   }
   return top;
 }
 
 // ━━━━━━━━ RESULTS ━━━━━━━━
 function compute() {
-  wrap.innerHTML = `<div class="slide active slide-r"><div class="load"><div class="load-ring"></div><p>Analyzing your taste...</p></div></div>`;
-  btn.classList.remove('enabled');
-  btn.textContent = '⋯';
+  slW.innerHTML = `<div class="slide active slide-r"><div class="load"><div class="load-r"></div><p>Analyzing your taste...</p></div></div>`;
+  btn.classList.remove('enabled'); btn.textContent = '⋯';
   setTimeout(()=>show(recommend()), 600);
 }
 
 function show(picks, ref) {
   const maxS = Math.max(...picks.map(p=>p.s),1);
-  const rank = ['Top Pick','Second Pick','Third Pick','Fourth','Fifth'];
+  // Build taste profile
+  const tastePills = [];
+  if (ans.mood) tastePills.push(`🎭 ${ans.mood}`);
+  const genres = Array.isArray(ans.genre) ? ans.genre : [ans.genre].filter(Boolean);
+  genres.forEach(g => tastePills.push(`🏷️ ${g}`));
+  if (ans.energy) tastePills.push(`⚡ ${ans.energy}`);
+  if (ans.era) tastePills.push(`📅 ${ans.era}`);
+  const eraNames = {pre2000:'pre-2000',era2000s:'2000s',era2010s:'2010s',era2020s:'2020s',latest:'2024+',any:'Any'};
 
-  wrap.innerHTML = `<div class="slide active slide-r"><div class="rv">
+  slW.innerHTML = `<div class="slide active slide-r"><div class="rv">
     <div class="rv-head">
       <h2>${ref?'Refreshed':'Your Picks'}</h2>
       <div class="sub">${ref?'Here\'s a different take':`We found your top ${picks.length}`}</div>
     </div>
+    <div class="taste">${tastePills.map(p=>`<span class="taste-pill">${p}</span>`).join('')}</div>
     <div class="rv-scroll">
       ${picks.map((item,i)=>{
         const pct = Math.round((item.s/maxS)*100);
         const k = item.t.toLowerCase().replace(/[^a-z0-9]/g,'');
         const w = wl.includes(k);
-        const il = item.i==='light'?'🌿':item.i==='medium'?'⚡':'🌋';
-        return `<div class="rc anim-in d${Math.min(i+1,4)}" data-key="${k}" onclick="this.classList.toggle('expanded')" tabindex="0" role="button" aria-label="${item.t} details">
-          <div class="rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i===3?'4️⃣':'5️⃣'} ${rank[i]}</div>
+        const badge = i===0 ? '⭐ ' : ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣'][i]+' ';
+        const rankL = i===0 ? ['#1 Pick','Star Pick'][0] : ['#2','#3','#4','#5','#6','#7'][i-1];
+        const iLbl = {light:'🌿 Light',medium:'⚡ Medium',heavy:'🌋 Heavy'}[item.e]||item.e;
+        return `<div class="rc anim-in d${Math.min(i+1,5)}" data-key="${k}" onclick="this.classList.toggle('expanded')" tabindex="0" role="button" aria-label="${item.t}">
+          <div class="rank">${badge} ${rankL}</div>
           <div class="title">${item.t}</div>
           <div class="meta">
             <span>${item.y}</span><span class="dot"></span>
-            <span>${item.ty==='movie'?'Movie':'Series'}</span><span class="dot"></span>
-            <span>${il} ${item.i}</span>
-            <span class="match-badge">${icons.check} ${pct}%</span>
+            <span>${item.ty==='movie'?'🎬 Movie':'📺 Series'}</span><span class="dot"></span>
+            <span>${iLbl}</span>
+            <span class="match-badge">${I.check} ${pct}%</span>
           </div>
-          <div class="tags">${item.g.map(g=>`<span class="tag">${g}</span>`).join('')}
+          <div class="tags">${item.g.map(g=>`<span class="tag">#${g}</span>`).join('')}
           ${item.rt?`<span class="tag">★ ${item.rt}</span>`:''}</div>
           <div class="desc">${item.d}</div>
           <div class="act">
-            <button class="btn-wl ${w?'saved':''}" onclick="event.stopPropagation();tglWl('${k}','${item.t.replace(/'/g,"\\'")}',this)">${icons[w?'check':'bookmark']} ${w?'Saved':'Watchlist'}</button>
-            <button class="btn-watched ${wt.includes(k)?'seen':''}" onclick="event.stopPropagation();tglWt('${k}',this)">${icons.eye} ${wt.includes(k)?'Seen':'Watched'}</button>
+            <button class="btn-wl ${w?'saved':''}" onclick="event.stopPropagation();tglWl('${k}','${item.t.replace(/'/g,"\\'")}',this)">${w?I.check:I.bookmark} ${w?'Saved':'Watchlist'}</button>
+            <button class="btn-wt ${wt.includes(k)?'seen':''}" onclick="event.stopPropagation();tglWt('${k}',this)">${I.eye} ${wt.includes(k)?'Seen':'Watched'}</button>
           </div>
-          <div class="expand"><div class="exp-inner">
+          <div class="exp"><div class="exp-in">
             <div class="row"><span class="lbl">Year</span><span class="val">${item.y}</span></div>
             <div class="row"><span class="lbl">Rating</span><span class="val">★ ${item.rt}/10</span></div>
-            <div class="row"><span class="lbl">Type</span><span class="val">${item.ty==='movie'?'Movie':'Series'}</span></div>
-            <div class="row"><span class="lbl">Length</span><span class="val">${item.tm==='quick'?'⏱ Quick':item.tm==='standard'?'🎞 Standard':item.tm==='binge'?'🍿 Binge':'🏰 Epic'}</span></div>
+            <div class="row"><span class="lbl">Type</span><span class="val">${item.ty==='movie'?'🎬 Movie':'📺 Series'}</span></div>
+            <div class="row"><span class="lbl">Energy</span><span class="val">${iLbl}</span></div>
+            <div class="row"><span class="lbl">Content</span><span class="val">${item.cn==='none'?'🌿 Clean':item.cn==='mild'?'⚡ Mild':item.cn==='moderate'?'⚠️ Moderate':'🔞 Heavy'}</span></div>
+            <div class="row"><span class="lbl">Streaming</span><span class="val">${(item.pl||['Various']).join(', ')}</span></div>
           </div></div>
         </div>`;
       }).join('')}
     </div>
     <div class="rbar">
-      <button class="btn-refine" onclick="refine()">↻ Refresh</button>
-      <button class="btn-share" onclick="share()">${icons.share} Share</button>
-      <button class="btn-retake" onclick="retake()">Retake</button>
+      <button class="btn-ref" onclick="refine()">${I.refresh} Refresh</button>
+      <button class="btn-sh" onclick="share()">${I.share} Share</button>
+      <button class="btn-r" onclick="retake()">Retake</button>
     </div>
   </div></div>`;
-  prFill.style.width='100%';
-  hdStep.innerHTML = '✨ Done';
+  prF.style.width='100%';
+  hdSt.innerHTML = '✨ Done';
   btn.classList.remove('enabled');
-  btn.innerHTML = `${icons.list} Watchlist`;
+  btn.innerHTML = `${I.list} Watchlist`;
   btn.onclick = openWL;
 }
 
 function refine() {
-  wrap.innerHTML = `<div class="slide active slide-r"><div class="load"><div class="load-ring"></div><p>Something different...</p></div></div>`;
+  slW.innerHTML = `<div class="slide active slide-r"><div class="load"><div class="load-r"></div><p>Finding something different...</p></div></div>`;
   setTimeout(()=>{
     const p = recommend();
-    if (p.length>2) {
+    if (p.length>3) {
       const rest = DB.filter(d=>!p.some(x=>x.t===d.t));
-      if (rest.length) {
-        const r = rest[Math.floor(Math.random()*rest.length)];
-        p[p.length-1] = {...r, s:score(r)};
+      if (rest.length>2) {
+        const r1 = rest[Math.floor(Math.random()*rest.length)];
+        const r2 = rest[Math.floor(Math.random()*rest.length)];
+        if (r1 && r2 && r1.t !== r2.t) { p[p.length-1]={...r1,s:score(r1)}; p[p.length-2]={...r2,s:score(r2)}; }
       }
     }
     p.sort((a,b)=>b.s-a.s);
-    show(p.slice(0,5), true);
+    show(p.slice(0,7), true);
   },500);
 }
 
 // ━━━━━━━━ WATCHLIST ━━━━━━━━
 function tglWl(key,title,el) {
   const i=wl.indexOf(key);
-  if(i>-1){wl.splice(i,1);if(el){el.innerHTML=`${icons.bookmark} Watchlist`;el.classList.remove('saved');}showToast('Removed from watchlist');}
-  else{wl.push(key);if(el){el.innerHTML=`${icons.check} Saved`;el.classList.add('saved');}showToast('Added to watchlist');}
+  if(i>-1){wl.splice(i,1);if(el){el.innerHTML=`${I.bookmark} Watchlist`;el.classList.remove('saved');}showToast('Removed');}
+  else{wl.push(key);if(el){el.innerHTML=`${I.check} Saved`;el.classList.add('saved');}showToast('Added ✨');}
   localStorage.setItem('rv_wl',JSON.stringify(wl));
 }
-
 function tglWt(key,el) {
   const i=wt.indexOf(key);
-  if(i>-1){wt.splice(i,1);if(el){el.innerHTML=`${icons.eye} Watched`;el.classList.remove('seen');}showToast('Marked as unwatched');}
-  else{wt.push(key);if(el){el.innerHTML=`${icons.check} Seen`;el.classList.add('seen');}showToast('Marked as watched');
+  if(i>-1){wt.splice(i,1);if(el){el.innerHTML=`${I.eye} Watched`;el.classList.remove('seen');}showToast('Unmarked');}
+  else{wt.push(key);if(el){el.innerHTML=`${I.check} Seen`;el.classList.add('seen');}showToast('Marked as watched 👁️');
     const wi=wl.indexOf(key);if(wi>-1){wl.splice(wi,1);localStorage.setItem('rv_wl',JSON.stringify(wl));}}
   localStorage.setItem('rv_wt',JSON.stringify(wt));
 }
-
 function openWL() {
-  const ov=$('wlOverlay'), list=$('wlList'), cnt=$('wlCount');
+  const ov=$('wlM'), list=$('wlL'), cnt=$('wlC');
   cnt.textContent=`${wl.length} saved`;
-  if(!wl.length){list.innerHTML=`<div class="empty-wl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg><br>Nothing saved yet<br><span style="font-size:13px;">Tap Watchlist on any recommendation</span></div>`;}
-  else{list.innerHTML=wl.map(k=>{const item=DB.find(d=>d.t.toLowerCase().replace(/[^a-z0-9]/g,'')===k);return item?`<div class="modal-item"><div><div class="mi-title">${item.t}</div><div class="mi-meta">${item.y} · ${item.ty==='movie'?'Movie':'Series'}</div></div><button onclick="rmWL('${k}')">Remove</button></div>`:'';}).join('');}
+  if(!wl.length){list.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg><br>Nothing saved yet</div>`;}
+  else{list.innerHTML=wl.map(k=>{const item=DB.find(d=>d.t.toLowerCase().replace(/[^a-z0-9]/g,'')===k);return item?`<div class="mi"><div><div class="t">${item.t}</div><div class="m">${item.y} · ${item.ty==='movie'?'🎬 Movie':'📺 Series'}</div></div><button onclick="rmWL('${k}')">Remove</button></div>`:'';}).join('');}
   ov.classList.add('open');
 }
-
-function rmWL(key){const i=wl.indexOf(key);if(i>-1){wl.splice(i,1);localStorage.setItem('rv_wl',JSON.stringify(wl));openWL();const btn=document.querySelector(`.btn-wl[data-key="${key}"]`);if(btn){btn.innerHTML=`${icons.bookmark} Watchlist`;btn.classList.remove('saved');}showToast('Removed');}}
-$('wlOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open')});
+function rmWL(key){const i=wl.indexOf(key);if(i>-1){wl.splice(i,1);localStorage.setItem('rv_wl',JSON.stringify(wl));openWL();showToast('Removed');}}
+$('wlM').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open')});
 
 // ━━━━━━━━ SHARE ━━━━━━━━
 function share() {
   const titles = [...document.querySelectorAll('.rc .title')].map(el=>el.textContent);
   if(!titles.length) return;
-  const text = `My ReelVibe picks:\n\n${titles.map((t,i)=>['🥇','🥈','🥉','4️⃣','5️⃣'][i]+' '+t).join('\n')}\n\nreelvibe.app`;
+  const text = `My ReelVibe picks:\n\n${titles.map((t,i)=>['⭐','🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'][i]+' '+t).join('\n')}\n\nreelvibe.app`;
   if(navigator.share){navigator.share({title:'ReelVibe',text}).catch(()=>{});}
   else{navigator.clipboard.writeText(text).then(()=>showToast('Copied!')).catch(()=>{});}
 }
@@ -876,15 +638,15 @@ function retake() {
   cur=0; render(); bindNav();
   btn.innerHTML='Next <span class="arrow">→</span>';
   btn.classList.remove('enabled');
-  prFill.style.width='0%';
-  hdStep.innerHTML='<span>1</span>/6';
-  hint.textContent='Tap an option to begin';
+  prF.style.width='0%';
+  hdSt.innerHTML='<span>1</span>/5';
+  hint.textContent='Tap to begin';
   btn.onclick=null; bindNav();
 }
 
 // ━━━━━━━━ TOAST ━━━━━━━━
 let tt;
-function showToast(m){toast.textContent=m;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('show'),2000);}
+function showToast(m){tst.textContent=m;tst.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>tst.classList.remove('show'),2000);}
 
 // ━━━━━━━━ BOOT ━━━━━━━━
 render(); bindNav();
