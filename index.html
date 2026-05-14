@@ -159,6 +159,7 @@
     }
     .slide.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
     .slide.dismiss { opacity: 0; transform: translateY(-16px) scale(0.95); }
+    .slide-r { justify-content: flex-start; }
 
     /* ── Question ── */
     .q-num {
@@ -268,13 +269,13 @@
     }
 
     /* ── RESULTS ── */
-    .rv { height: 100%; display: flex; flex-direction: column; padding-top: var(--space-1); }
+    .rv { flex: 1; display: flex; flex-direction: column; padding-top: var(--space-1); min-height: 0; }
     .rv-head { display: flex; align-items: flex-start; gap: var(--space-3); margin-bottom: var(--space-5); flex-shrink: 0; flex-direction: column; }
     .rv-head h2 { font-size: var(--font-3xl); font-weight: 800; letter-spacing: -0.3px; }
     .rv-head .sub { font-size: var(--font-base); color: var(--text-secondary); }
     .rv-scroll {
       flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-      padding: 0 var(--space-1) var(--space-3);
+      padding: 0 var(--space-1) var(--space-3); min-height: 0;
     }
     .rv-scroll::-webkit-scrollbar { width: 3px; }
     .rv-scroll::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 3px; }
@@ -756,7 +757,7 @@ function recommend() {
 
 // ━━━━━━━━ RESULTS ━━━━━━━━
 function compute() {
-  wrap.innerHTML = `<div class="slide active"><div class="load"><div class="load-ring"></div><p>Analyzing your taste...</p></div></div>`;
+  wrap.innerHTML = `<div class="slide active slide-r"><div class="load"><div class="load-ring"></div><p>Analyzing your taste...</p></div></div>`;
   btn.classList.remove('enabled');
   btn.textContent = '⋯';
   setTimeout(()=>show(recommend()), 600);
@@ -766,7 +767,7 @@ function show(picks, ref) {
   const maxS = Math.max(...picks.map(p=>p.s),1);
   const rank = ['Top Pick','Second Pick','Third Pick','Fourth','Fifth'];
 
-  wrap.innerHTML = `<div class="slide active"><div class="rv">
+  wrap.innerHTML = `<div class="slide active slide-r"><div class="rv">
     <div class="rv-head">
       <h2>${ref?'Refreshed':'Your Picks'}</h2>
       <div class="sub">${ref?'Here\'s a different take':`We found your top ${picks.length}`}</div>
@@ -816,7 +817,7 @@ function show(picks, ref) {
 }
 
 function refine() {
-  wrap.innerHTML = `<div class="slide active"><div class="load"><div class="load-ring"></div><p>Something different...</p></div></div>`;
+  wrap.innerHTML = `<div class="slide active slide-r"><div class="load"><div class="load-ring"></div><p>Something different...</p></div></div>`;
   setTimeout(()=>{
     const p = recommend();
     if (p.length>2) {
