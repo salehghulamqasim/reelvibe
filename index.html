@@ -61,21 +61,6 @@
     .slide.dismiss{opacity:0;transform:translateY(-16px) scale(0.95)}
     .slide-jc{justify-content:center}
     .slide-r{justify-content:flex-start}
-    /* Home */
-    .home{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s6);text-align:center;padding:var(--s6) 0}
-    .home-icon{width:64px;height:64px;color:var(--primary-l);margin-bottom:var(--s2)}
-    .home h1{font-size:var(--f-4xl);font-weight:800;letter-spacing:-0.5px}
-    .home p{font-size:var(--f-base);color:var(--text2);max-width:280px;line-height:1.5}
-    .home .wl-count{font-size:var(--f-md);color:var(--text3)}
-    .home .wl-count span{color:var(--primary-l);font-weight:600}
-    .home-btns{display:flex;flex-direction:column;gap:var(--s3);width:100%;max-width:280px}
-    .home-btn{padding:var(--s5);border:none;border-radius:var(--r-md);font-size:var(--f-lg);font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.25s var(--spring);-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:var(--s2)}
-    .home-btn:active{transform:scale(0.97)}
-    .home-btn svg{width:20px;height:20px}
-    .home-btn-pri{background:var(--grad);color:#fff}
-    .home-btn-pri:hover{box-shadow:0 12px 32px rgba(124,58,237,0.25)}
-    .home-btn-sec{background:var(--bg-card);color:var(--text);border:1px solid var(--border)}
-    .home-btn-sec:hover{background:var(--bg-hover)}
     /* Questions */
     .q-num{font-size:var(--f-sm);font-weight:600;color:var(--primary-l);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:var(--s1)}
     .q-title{font-size:var(--f-4xl);font-weight:800;line-height:1.1;letter-spacing:-0.5px;margin-bottom:var(--s1)}
@@ -187,7 +172,7 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .anim-in{animation:fadeUp 0.45s var(--ease-out) forwards;opacity:0}
     .d1{animation-delay:0.1s}.d2{animation-delay:0.18s}.d3{animation-delay:0.26s}.d4{animation-delay:0.34s}.d5{animation-delay:0.42s}.d6{animation-delay:0.5s}
-    @media(max-width:380px){#app{padding:0 var(--s4)}.q-title{font-size:var(--f-3xl)}.opt svg{width:22px;height:22px}.opt .lbl{font-size:var(--f-xs)}.opt{padding:var(--s3) var(--s1);min-height:64px}.hd{padding-top:var(--s8)}.chip{padding:5px var(--s2);font-size:var(--f-xs)}.chip svg{width:12px;height:12px}.home-icon{width:52px;height:52px}}
+    @media(max-width:380px){#app{padding:0 var(--s4)}.q-title{font-size:var(--f-3xl)}.opt svg{width:22px;height:22px}.opt .lbl{font-size:var(--f-xs)}.opt{padding:var(--s3) var(--s1);min-height:64px}.hd{padding-top:var(--s8)}.chip{padding:5px var(--s2);font-size:var(--f-xs)}.chip svg{width:12px;height:12px}}
     @media(min-width:481px){#app{border-left:1px solid var(--border);border-right:1px solid var(--border)}}
   </style>
 </head>
@@ -252,7 +237,6 @@ share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="
 list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
 check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
 plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l1.5 6.5L20 10l-6.5 2.5L12 19l-1.5-6.5L4 10l6.5-2.5L12 2z"/></svg>',
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -376,37 +360,7 @@ let wt = JSON.parse(localStorage.getItem('rv_wt')||'[]');
 
 const $ = id=>document.getElementById(id);
 const slW=$('slW'), btn=$('btnN'), prF=$('prF'), hdSt=$('hdSt'), tst=$('tst'), hint=$('hint');
-let onHome = true; // starts on home screen
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// HOME SCREEN
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function showHome() {
-  const count = wl.length;
-  slW.innerHTML = `<div class="slide active slide-jc"><div class="home">
-    ${I.sparkle}
-    <h1>ReelVibe</h1>
-    <p>Answer 5 quick questions and get personalized movie &amp; series picks</p>
-    ${count > 0 ? `<div class="wl-count">📋 You have <span>${count}</span> saved picks</div>` : ''}
-    <div class="home-btns">
-      <button class="home-btn home-btn-pri" onclick="startQuiz()">${I.sparkle} Get Recommendations</button>
-      <button class="home-btn home-btn-sec" onclick="openWL()">${I.list} View Watchlist${count > 0 ? ` (${count})` : ''}</button>
-    </div>
-  </div></div>`;
-  prF.style.width='0%';
-  hdSt.textContent = '';
-  btn.style.display = 'none';
-  hint.textContent = '';
-  onHome = true;
-}
-
-function startQuiz() {
-  onHome = false;
-  btn.style.display = '';
-  cur = 0;
-  render();
-  goTo(0);
-}
+let onHome = false;
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // RENDER QUIZ
@@ -575,9 +529,8 @@ function show(picks, ref) {
     </div>
   </div></div>`;
   prF.style.width='100%'; hdSt.innerHTML='✨ Done';
-  btn.classList.remove('enabled'); btn.innerHTML='🏠 Home'; btn.onclick=goHome;
+  btn.classList.remove('enabled'); btn.innerHTML='↻ Start Over'; btn.onclick=retake;
 }
-function goHome() { Object.keys(ans).forEach(k=>delete ans[k]); showHome(); btn.style.display='none'; btn.onclick=null; }
 function refine() {
   slW.innerHTML=`<div class="slide active slide-r"><div class="load"><div class="load-r"></div><p>Finding something different...</p></div></div>`;
   setTimeout(()=>{
@@ -628,9 +581,12 @@ let tt;
 function showToast(m){tst.textContent=m;tst.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>tst.classList.remove('show'),2000)}
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// BOOT
+// BOOT — start quiz immediately, watchlist in header
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-showHome();
+cur = 0;
+render();
+goTo(0);
+// Watchlist icon already in header (hdWlBtn)
 </script>
 </body>
 </html>
