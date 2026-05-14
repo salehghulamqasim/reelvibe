@@ -572,14 +572,15 @@ function show(picks, ref) {
     <div class="rbar">
       <button class="btn-ref" onclick="refine()">${I.refresh} Refresh</button>
       <button class="btn-sh" onclick="share()">${I.share} Share</button>
+      <button class="btn-sh" onclick="openWL()">${I.list} Watchlist</button>
       <button class="btn-r" onclick="retake()">Retake</button>
     </div>
   </div></div>`;
   prF.style.width='100%';
   hdSt.innerHTML = '✨ Done';
   btn.classList.remove('enabled');
-  btn.innerHTML = `${I.list} Watchlist`;
-  btn.onclick = openWL;
+  btn.innerHTML = 'Back to top';
+  btn.onclick = ()=>{ document.querySelector('.rv-scroll')?.scrollTo({ top: 0, behavior: 'smooth' }); };
 }
 
 function refine() {
